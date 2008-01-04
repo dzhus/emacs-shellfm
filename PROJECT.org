@@ -1,0 +1,39 @@
+* Package structure
+  A package provides Emacs Lisp interface to control shell-fm (console
+  Last.fm player) subprocess
+** User functions
+   Sending commands to shell-fm subprocess.
+** Parsing shell-fm output
+   Filter function should inform user about shell-fm status
+** TODO Keybindings
+** TODO Shell.FM global menu
+* Package functions
+** TODO [7/8] General
+   - [X] shellfm
+   - [X] shellfm-url
+   - [X] shellfm-station-tag
+   - [X] shellfm-station-artist
+   - [X] shellfm-station-recommended
+   - [X] shellfm-station-group
+   - [X] shellfm-kill
+   - [ ] shellfm-status
+** TODO [6/15] Current track operation
+   - [X] shellfm-skip-track
+   - [X] shellfm-love-track
+   - [X] shellfm-ban-track
+   - [0/3] shellfm-tag
+     - [ ] shellfm-tag-track
+     - [ ] shellfm-tag-artist
+     - [ ] shellfm-tag-album
+   - [ ] shellfm-recommend
+     - [ ] shellfm-recommend-track
+     - [ ] shellfm-recommend-artist
+     - [ ] shellfm-recommend-album
+   - [X] shellfm-similar-artists
+   - [X] shellfm-pause
+   - [X] shellfm-stop
+   - [ ] shellfm-track-info
+* Customizable options
+** TODO [2/2] General
+   - [X] shellfm-executable
+   - [X] shellfm-args
