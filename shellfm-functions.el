@@ -11,12 +11,17 @@ Switch to lastfm://<namespace>/<value> radio"
 
 ;;; Interactive user-oriented functions
 (defun shellfm-url (url)
-  "Switch to given lastfm:// URL."
+  "Switch to given lastfm:// URL.
+
+You may omit lastfm:// part."
   (interactive "slasftm:// URL: ")
   (shellfm-command (concat "r" url)))
 
 (defun shellfm-station-tag (tag)
-  "Switch to global tag station."
+  "Switch to global tag station.
+
+Several tags separated with comma (like `rock,jazz,vocals`) may
+be passed."
   (interactive "sSwitch to global tag station: ")
   (shellfm-radio-command "globaltags" tag))
 
@@ -25,7 +30,7 @@ Switch to lastfm://<namespace>/<value> radio"
   (interactive "nObscurity [0-100]: ")
   ;; 100 is unknown magic constant. It's uncertain if this is an
   ;; obscurity level.
-  (shellfm-radio-command "user" (concat shellfm-user "/recommended/100/")))
+  (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
 
 (defun shellfm-station-artist (artist)
   "Switch to similar artists station."
