@@ -68,7 +68,7 @@ This function always returns nil."
 
 (defun shellfm-station-recommended ()
   "Switch to recommended tracks station."
-  (interactive "nObscurity [0-100]: ")
+  (interactive)
   ;; 100 is unknown magic constant. I'm uncertain if this is really an
   ;; obscurity level.
   (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
