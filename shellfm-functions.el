@@ -33,20 +33,38 @@ You may omit lastfm:// part."
   (interactive "slasftm:// URL: ")
   (shellfm-command (concat "r" url)))
 
+(defun shellfm-station-completing (prompt completion-table namespace &optional arg)
+  (let ((real-arg
+         (if arg arg
+           ;; Override local minibuffer keymap to avoid blocking of
+           ;; tags with spaces
+           (let ((completion-ignore-case t)
+                 (minibuffer-local-completion-map
+                  (assq-delete-all 32 minibuffer-local-completion-map)))
+             (completing-read prompt completion-table)))))
+    (shellfm-radio-command namespace real-arg)))
+
+
 (defun shellfm-station-tag (&optional tag)
   "Switch to global tag station.
 
 Several tags separated with comma (like `rock,jazz,vocals`) may
-be passed."
+be passed.
+
+This function may be called non-interactively.
+
+This function always returns nil."
   (interactive)
-  (let ((real-tag 
-         (if tag tag
-           ;; Override local minibuffer keymap to avoid blocking of
-           ;; tags with spaces
-           (let ((minibuffer-local-completion-map
-                  (assq-delete-all 32 minibuffer-local-completion-map)))
-             (completing-read "Tag(s): " shellfm-completion-tags)))))
-    (shellfm-radio-command "globaltags" real-tag)))
+  (shellfm-station-completing "Tag(s): " shellfm-completion-tags "globaltags" tag))
+
+(defun shellfm-station-artist (&optional artist)
+  "Switch to similar artist station.
+
+This function may be called non-interactively.
+
+This function always returns nil."
+  (interactive)
+  (shellfm-station-completing "Artist: " shellfm-completion-artists "artist" artist))
 
 (defun shellfm-station-recommended ()
   "Switch to recommended tracks station."
@@ -54,16 +72,6 @@ be passed."
   ;; 100 is unknown magic constant. I'm uncertain if this is really an
   ;; obscurity level.
   (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
-
-(defun shellfm-station-artist (&optional artist)
-  "Switch to similar artist station."
-  (interactive)
-  (let ((real-artist
-         (if artist artist
-           (let ((minibuffer-local-completion-map
-                  (assq-delete-all 32 minibuffer-local-completion-map)))
-             (completing-read "Artist: " shellfm-completion-artists)))))
-    (shellfm-radio-command "artist" real-artist)))
 
 (defun shellfm-station-group (group)
   "Switch to group station."
