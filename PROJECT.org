@@ -8,13 +8,13 @@
 ** TODO Keybindings
 ** TODO Shell.FM global menu
 * Package functions
-** TODO [9/12] General
+** TODO [11/12] General
    - [X] shellfm
    - [X] shellfm-url
    - [X] shellfm-station-tag
-   - [ ] Autocomplete global tags
+   - [X] Autocomplete global tags
    - [X] shellfm-station-artist
-   - [ ] Autocomplete favorite artists
+   - [X] Autocomplete favorite artists
    - [X] shellfm-station-recommended
    - [X] shellfm-station-group
    - [X] shellfm-station-fans
