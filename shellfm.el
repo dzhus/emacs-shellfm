@@ -77,19 +77,75 @@ This function return a list of matching strings."
                               "\\),.+$")))
 
 
+;;;; Shell-fm global state variables
+
+(defvar shellfm-current-track "No tracks played yet"
+  "Title of Last.fm track being played.")
+
+(defvar shellfm-current-artist "Unknown"
+  "Currently played Last.fm artist")
+
+(defvar shellfm-current-station "no station"
+  "Last.fm station being streamed.")
+
+(defvar shellfm-status 'dead
+  "Current shell-fm subprocess status.
+
+Possible values of this symbol are:
+dead -- subprocess is not running.
+started -- shell-fm subprocess just started.
+radio -- streaming a Last.fm radio.
+paused -- playback is paused.
+stopped -- streaming has been stopped.")
+
+(defun shellfm-set-status (status)
+  "Set shell-fm global status to STATUS."
+  (setq shellfm-status status))
+
+
+;;;; Shell-fm subprocess filtering
+
+(defvar shellfm-nowplaying-regexp "Now playing \"\\(.+\\)\" by \\(.+\\)\."
+  "Regular expression to match \"Now playing <track> by <artist>.\"
+message in shell-fm output.
+
+It must contain two subexpressions, for track and artist respectively.")
+
+(defvar shellfm-station-regexp "^Receiving \\(.+\\).$"
+  "Regular expression to match \"Receiving <station>.\" message in shell-fm output.
+
+This variable must contain one subexpression to match station name.")
+
+(defun shellfm-process-filter (process data)
+  "Filter function for shell-fm subprocess.
+
+Reads shell-fm output and updates shellfm-current-track,
+shellfm-current-artist, shellfm-current-station, shellfm-status
+variables."
+  (when (string-match shellfm-nowplaying-regexp data)
+    (setq shellfm-current-track (match-string 1 data))
+    (setq shellfm-current-artist (match-string 2 data)))
+  (when (string-match shellfm-station-regexp data)
+    (setq shellfm-current-station (match-string 1 data))
+    (shellfm-set-status 'radio)))
+
+
 ;;;; Visible functions
 
 (defun shellfm-running ()
   "Returns t if shell-fm subprocess is running, nil otherwise."
-  (get-process "shell-fm"))
+  (not (eq shellfm-status 'dead)))
 
 (defun shellfm (&optional arg)
   "Start shell-fm subprocess."
   (interactive "P")
-  (if (not (shellfm-running))
-      (progn (start-process "shell-fm" nil shellfm-executable
-                            (concat "-b" shellfm-args) lastfm-default-url)
-             (require 'shellfm-functions))
+  (unless (shellfm-running)
+    (progn (require 'shellfm-functions)
+           (let ((sp
+                  (start-process "shell-fm" nil shellfm-executable
+                                 (concat "-b" shellfm-args) lastfm-default-url)))
+             (set-process-filter sp 'shellfm-process-filter))
+           (shellfm-set-status 'started))
     (message "Shell.FM is already running")))
 
 (provide 'shellfm)

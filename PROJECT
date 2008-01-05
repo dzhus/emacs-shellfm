@@ -1,0 +1,88 @@
+-*-org-*-
+
+* Package structure
+  A package provides Emacs Lisp interface to control shell-fm (console
+  Last.fm player) subprocess
+** User functions
+   Sending commands to shell-fm subprocess.
+** DONE [#A] Parsing shell-fm output
+   CLOSED: [2008-01-05 Сбт 23:20]
+   Filter function should inform user about shell-fm status
+** [0%] Robustness
+   - [0/1] Handle unexpected shell-fm output
+     - [ ] Unset login/password
+   - [ ] Unset Last.fm username
+         `shellfm-station-recommended` and `shellfm-get-private-tags`
+         become unavailable.
+** TODO Keybindings
+** TODO Shell.FM global menu
+** [%] «Nifties»
+* Package functions
+** TODO [12/12] General
+   - [X] shellfm
+   - [X] shellfm-url
+   - [X] shellfm-station-tag
+   - [X] Autocomplete global tags
+   - [X] shellfm-station-artist
+   - [X] Autocomplete favorite artists
+   - [X] shellfm-station-recommended
+   - [X] shellfm-station-group
+   - [X] shellfm-station-fans
+   - [X] shellfm-station-similar-artists
+   - [X] shellfm-kill
+   - [X] shellfm-status
+** TODO [43%] Current track operation
+   - [X] shellfm-track-info
+   - [ ] Album data in track info
+   - [X] shellfm-skip-track
+   - [X] shellfm-love-track
+   - [X] shellfm-ban-track
+   - [0/4] Tagging
+     - [ ] shellfm-tag
+     - [ ] shellfm-tag-track
+     - [ ] shellfm-tag-artist
+     - [ ] shellfm-tag-album
+   - [0/4] Recommending
+     - [ ] shellfm-recommend
+     - [ ] shellfm-recommend-track
+     - [ ] shellfm-recommend-artist
+     - [ ] shellfm-recommend-album
+   - [X] shellfm-similar-artists
+   - [X] shellfm-pause
+   - [X] shellfm-stop
+* Customizable options
+** TODO [2/2] General
+   - [X] shellfm-executable
+   - [X] shellfm-args
+* Issues
+** DONE getopt+shell-fm is nasty with command line options:
+   CLOSED: [2008-01-04 Птн 19:29]
+   `shell-fm -b ""` — yields «Bad lastfm:// URL» error. Fix: always
+   pass some `lastfm://` URL to `shell-fm` process. 
+
+* Manual
+** Installation
+   Unpack emacs-shellfm tarball.
+
+   Type `make recompile` to byte-compile `.el` files.
+
+   Add the following to your `~/.emacs.el` file:
+
+       (add-to-list 'load-path "/path/to/emacs-shellfm/directory")
+       (require 'shellfm)
+
+   Reload your `~/.emacs.el`. Customize `shellfm` group.
+** Using emacs-shellfm
+*** Launching Shell.FM
+    You may call `shellfm` function which will start Shell.FM
+    subprocess and tune to default Last.fm radio provided you've
+    specified one in `lastfm-default-url` customization variable.
+*** Shell.FM functions
+    Then you may see all the Shell.FM functions by typing `C-h a
+    shellfm`.
+
+    You may stop listening using `shellfm-pause` or `shellfm-stop`.
+    Kill Shell.FM using `shellfm-kill` function.
+*** Tips
+    In case you have keyboard with additional multimedia keys, it may
+    be cool to bind them all to `shellfm-` functions.

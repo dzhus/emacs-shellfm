@@ -106,23 +106,46 @@ This function always returns nil."
   (interactive)
   (shellfm-command "B"))
 
+(defun shellfm-track-info ()
+  "Show current track title and artist in echo area."
+  (interactive)
+  (if (memq shellfm-status '(radio paused))
+      (message (format "Currently playing %s — %s"
+                       shellfm-current-artist
+                       shellfm-current-track))
+    (message "Not available.")))
+
 
-;;;; Global state control commands
+;;;; Global state polling and control commands
+
+(defun shellfm-show-status ()
+  "Show current Shell.FM status in echo area."
+  (interactive)
+  (if (eq shellfm-status 'radio)
+      (message (concat "Listening to " shellfm-current-station))
+    (message (concat "Shell.FM is " (symbol-name shellfm-status)))))
 
 (defun shellfm-pause ()
   "Pause/play current track."
   (interactive)
-  (shellfm-command "p"))
+  (shellfm-command "p")
+  (cond ((eq shellfm-status 'radio)
+         (shellfm-set-status 'paused))
+        ((eq shellfm-status 'paused)
+         (shellfm-set-status 'radio))
+        (t (error "Not available"))))
 
 (defun shellfm-stop ()
   "Stop playing."
   (interactive)
-  (shellfm-command "S"))
+  (shellfm-command "S")
+  (shellfm-set-status 'stopped))
 
 (defun shellfm-kill ()
   "Kill shell-fm subprocess and disable all related functions."
   (interactive)
   (delete-process "shell-fm")
-  (unload-feature 'shellfm-functions))
+  (unload-feature 'shellfm-functions)
+  (shellfm-set-status 'dead))
 
 (provide 'shellfm-functions)
