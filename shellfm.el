@@ -139,13 +139,13 @@ variables."
 (defun shellfm (&optional arg)
   "Start shell-fm subprocess."
   (interactive "P")
-  (unless (shellfm-running)
-    (progn (require 'shellfm-functions)
-           (let ((sp
-                  (start-process "shell-fm" nil shellfm-executable
-                                 (concat "-b" shellfm-args) lastfm-default-url)))
-             (set-process-filter sp 'shellfm-process-filter))
-           (shellfm-set-status 'started))
+  (if (not (shellfm-running))
+      (progn (require 'shellfm-functions)
+             (let ((sp
+                    (start-process "shell-fm" nil shellfm-executable
+                                   (concat "-b" shellfm-args) lastfm-default-url)))
+               (set-process-filter sp 'shellfm-process-filter))
+             (shellfm-set-status 'started))
     (message "Shell.FM is already running")))
 
 (provide 'shellfm)

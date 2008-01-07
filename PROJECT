@@ -5,6 +5,9 @@
   Last.fm player) subprocess
 ** User functions
    Sending commands to shell-fm subprocess.
+** TODO [#D] Minor mode
+   Probably emacs-shellfm should act like a minor mode.
+   [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
 ** DONE [#A] Parsing shell-fm output
    CLOSED: [2008-01-05 Сбт 23:20]
    Filter function should inform user about shell-fm status
