@@ -102,6 +102,13 @@ stopped -- streaming has been stopped.")
   "Set shell-fm global status to STATUS."
   (setq shellfm-status status))
 
+(defun shellfm-set-track (title artist)
+  (setq shellfm-current-artist artist)
+  (setq shellfm-current-title title))
+
+(defun shellfm-set-station (station)
+  (setq shellfm-current-station (station)))
+
 
 ;;;; Shell-fm subprocess filtering
 
@@ -123,10 +130,10 @@ Reads shell-fm output and updates shellfm-current-track,
 shellfm-current-artist, shellfm-current-station, shellfm-status
 variables."
   (when (string-match shellfm-nowplaying-regexp data)
-    (setq shellfm-current-track (match-string 1 data))
-    (setq shellfm-current-artist (match-string 2 data)))
+    (shellfm-set-current-track (match-string 1 data)
+                               (match-string 2 data)))
   (when (string-match shellfm-station-regexp data)
-    (setq shellfm-current-station (match-string 1 data))
+    (shellfm-set-station (match-string 1 data))
     (shellfm-set-status 'radio)))
 
 
