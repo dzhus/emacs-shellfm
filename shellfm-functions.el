@@ -1,3 +1,31 @@
+;;; shellfm-functions.el --- user-level functions for Emacs Shell.FM interface
+
+;; Copyright (C) 2008 Dmitry Dzhus
+
+;; Author: Dmitry Dzhus <mail@sphinx.net.ru>
+;; Keywords: scrobbling audio music last.fm
+
+;; This file is a part of emacs-shellfm.
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, write to the Free Software
+;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+
+;; This part of emacs-shellfm is loaded whenever user starts listening
+;; session and contains functions to control Shell.FM subprocess.
+
 (require 'shellfm)
 
 ;;;; Completion lists
@@ -112,7 +140,7 @@ This function always returns nil."
   (if (memq shellfm-status '(radio paused))
       (message (format "Currently playing %s — %s"
                        shellfm-current-artist
-                       shellfm-current-track))
+                       shellfm-current-title))
     (message "Not available.")))
 
 
@@ -149,3 +177,4 @@ This function always returns nil."
   (shellfm-set-status 'dead))
 
 (provide 'shellfm-functions)
+;;; shellfm-functions.el ends here

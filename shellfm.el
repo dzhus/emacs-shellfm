@@ -1,4 +1,33 @@
-;;;; Customize options
+;;; shellfm.el --- Emacs Shell.FM interface
+
+;; Copyright (C) 2008 Dmitry Dzhus
+
+;; Author: Dmitry Dzhus <mail@sphinx.net.ru>
+;; Keywords: scrobbling audio music last.fm
+
+;; This file is a part of emacs-shellfm.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program; if not, write to the Free Software
+;; Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+;;; Commentary:
+
+;; Emacs-shellfm is the Emacs interface for Shell.fm console client
+;; for Last.fm.
+
+;;;; Customization options
+;;; Code:
 (defgroup shellfm nil
   "Emacs interface to shell-fm."
   :link '(url-link "http://nex.scrapping.cc/shell-fm/")
@@ -34,7 +63,7 @@
 ;;;; Miscellaneous internal functions
 
 (defun pattern-parse-file (file pattern)
-  "Extract strings matching first subexpression of PATTERN from FILE.
+  "Extract strings from FILE matching first subexpression of PATTERN.
 
 FILE is an ordinary filename.
 
@@ -50,7 +79,7 @@ This function return a list of matching strings."
       result)))
 
 (defvar shellfm-tag-pattern "[ a-z0-9-]*"
-  "Regular expression to match Last.fm tags")
+  "Regular expression to match Last.fm tags.")
 
 ;; (defun shellfm-get-lasftm-user ()
 ;;   "Extract Last.fm username from shell-fm config."
@@ -79,11 +108,11 @@ This function return a list of matching strings."
 
 ;;;; Shell-fm global state variables
 
-(defvar shellfm-current-track "No tracks played yet"
+(defvar shellfm-current-title "No tracks played yet"
   "Title of Last.fm track being played.")
 
 (defvar shellfm-current-artist "Unknown"
-  "Currently played Last.fm artist")
+  "Currently played Last.fm artist.")
 
 (defvar shellfm-current-station "no station"
   "Last.fm station being streamed.")
@@ -103,20 +132,22 @@ stopped -- streaming has been stopped.")
   (setq shellfm-status status))
 
 (defun shellfm-set-track (title artist)
+  "Store current track TITLE and ARTIST."
   (setq shellfm-current-artist artist)
   (setq shellfm-current-title title))
 
 (defun shellfm-set-station (station)
+  "Store current STATION."
   (setq shellfm-current-station (station)))
 
 
 ;;;; Shell-fm subprocess filtering
 
 (defvar shellfm-nowplaying-regexp "Now playing \"\\(.+\\)\" by \\(.+\\)\."
-  "Regular expression to match \"Now playing <track> by <artist>.\"
-message in shell-fm output.
+  "Regular expression to match \"Now playing <track> by <artist>.\" message in shell-fm output.
 
-It must contain two subexpressions, for track and artist respectively.")
+It must contain two subexpressions, for track and artist
+respectively.")
 
 (defvar shellfm-station-regexp "^Receiving \\(.+\\).$"
   "Regular expression to match \"Receiving <station>.\" message in shell-fm output.
@@ -139,13 +170,13 @@ variables."
 
 ;;;; Visible functions
 
-(defun shellfm-running ()
-  "Returns t if shell-fm subprocess is running, nil otherwise."
+(defun shellfm-running-p ()
+  "Return t if shell-fm subprocess is running, nil otherwise."
   (not (eq shellfm-status 'dead)))
 
-(defun shellfm (&optional arg)
+(defun shellfm ()
   "Start shell-fm subprocess."
-  (interactive "P")
+  (interactive)
   (if (not (shellfm-running))
       (progn (require 'shellfm-functions)
              (let ((sp
@@ -156,3 +187,4 @@ variables."
     (message "Shell.FM is already running")))
 
 (provide 'shellfm)
+;;; shellfm.el ends here
