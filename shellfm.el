@@ -138,7 +138,7 @@ stopped -- streaming has been stopped.")
 
 (defun shellfm-set-station (station)
   "Store current STATION."
-  (setq shellfm-current-station (station)))
+  (setq shellfm-current-station station))
 
 
 ;;;; Shell-fm subprocess filtering
