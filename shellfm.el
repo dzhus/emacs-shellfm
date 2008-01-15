@@ -157,11 +157,11 @@ This variable must contain one subexpression to match station name.")
 (defun shellfm-process-filter (process data)
   "Filter function for shell-fm subprocess.
 
-Reads shell-fm output and updates shellfm-current-track,
+Reads shell-fm output and updates shellfm-current-title,
 shellfm-current-artist, shellfm-current-station, shellfm-status
 variables."
   (when (string-match shellfm-nowplaying-regexp data)
-    (shellfm-set-current-track (match-string 1 data)
+    (shellfm-set-track (match-string 1 data)
                                (match-string 2 data)))
   (when (string-match shellfm-station-regexp data)
     (shellfm-set-station (match-string 1 data))
@@ -177,7 +177,7 @@ variables."
 (defun shellfm ()
   "Start shell-fm subprocess."
   (interactive)
-  (if (not (shellfm-running))
+  (if (not (shellfm-running-p))
       (progn (require 'shellfm-functions)
              (let ((sp
                     (start-process "shell-fm" nil shellfm-executable
