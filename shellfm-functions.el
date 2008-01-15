@@ -30,6 +30,7 @@
 
 ;;;; Completion lists
 
+;;; Code:
 (defvar shellfm-completion-artists (shellfm-get-top-artists)
   "A list of known artists to be used in minibuffer completion.")
 
@@ -41,14 +42,16 @@
 ;;;; Inline functions talking to shell-fm process
 
 (defsubst shellfm-command (string)
-  "Send a string terminated by newline to the shell-fm
-subprocess."
+  "Send a STRING to the shell-fm subprocess.
+
+Newline is added automagically."
+
   (process-send-string "shell-fm" (concat string "\n")))
 
 (defsubst shellfm-radio-command (namespace value)
   "Switch to Last.fm radio given its type and value.
 
-Switch to lastfm://<namespace>/<value> radio"
+Switch to lastfm://NAMESPACE/VALUE radio"
   (shellfm-url (concat namespace "/" value)))
 
 
@@ -62,6 +65,12 @@ You may omit lastfm:// part."
   (shellfm-command (concat "r" url)))
 
 (defun shellfm-station-completing (prompt completion-table namespace &optional arg)
+  "Prompt for station, if needed and switch to it.
+
+Start a completing interactive prompt given PROMPT text,
+COMPLETION-TABLE, and switch to station using its NAMESPACE as in
+`shellfm-radio-command'. ARG is station value in
+`shellfm-radio-command' used for non-interactive call."
   (let ((real-arg
          (if arg arg
            ;; Override local minibuffer keymap to avoid blocking of
@@ -74,7 +83,7 @@ You may omit lastfm:// part."
 
 
 (defun shellfm-station-tag (&optional tag)
-  "Switch to global tag station.
+  "Switch to global TAG station.
 
 Several tags separated with comma (like `rock,jazz,vocals`) may
 be passed.
@@ -86,7 +95,7 @@ This function always returns nil."
   (shellfm-station-completing "Tag(s): " shellfm-completion-tags "globaltags" tag))
 
 (defun shellfm-station-artist (&optional artist)
-  "Switch to similar artist station.
+  "Switch to similar ARTIST station.
 
 This function may be called non-interactively.
 
@@ -102,7 +111,7 @@ This function always returns nil."
   (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
 
 (defun shellfm-station-group (group)
-  "Switch to group station."
+  "Switch to GROUP station."
   (interactive "sGroup: ")
   (shellfm-radio-command "group" group))
 
@@ -177,4 +186,5 @@ This function always returns nil."
   (shellfm-set-status 'dead))
 
 (provide 'shellfm-functions)
+
 ;;; shellfm-functions.el ends here

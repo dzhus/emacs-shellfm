@@ -128,16 +128,24 @@ paused -- playback is paused.
 stopped -- streaming has been stopped.")
 
 (defun shellfm-set-status (status)
-  "Set shell-fm global status to STATUS."
+  "Set shell-fm global status to STATUS.
+
+This is a setter function for `shellfm-status' variable."
   (setq shellfm-status status))
 
 (defun shellfm-set-track (title artist)
-  "Store current track TITLE and ARTIST."
+  "Store current track TITLE and ARTIST.
+
+This is a setter function for `shellfm-current-artist' and
+`shellfm-current-title' variables."
   (setq shellfm-current-artist artist)
   (setq shellfm-current-title title))
 
 (defun shellfm-set-station (station)
-  "Store current STATION."
+  "Store current STATION.
+
+This is a setter function for `shellfm-current-station'
+variable."
   (setq shellfm-current-station station))
 
 
@@ -157,9 +165,9 @@ This variable must contain one subexpression to match station name.")
 (defun shellfm-process-filter (process data)
   "Filter function for shell-fm subprocess.
 
-Reads shell-fm output and updates shellfm-current-title,
-shellfm-current-artist, shellfm-current-station, shellfm-status
-variables."
+Reads shell-fm output and updates `shellfm-current-title',
+`shellfm-current-artist', `shellfm-current-station',
+`shellfm-status' variables."
   (when (string-match shellfm-nowplaying-regexp data)
     (shellfm-set-track (match-string 1 data)
                                (match-string 2 data)))
@@ -187,4 +195,5 @@ variables."
     (message "Shell.FM is already running")))
 
 (provide 'shellfm)
+
 ;;; shellfm.el ends here
