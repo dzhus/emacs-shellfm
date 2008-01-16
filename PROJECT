@@ -19,7 +19,8 @@
          become unavailable.
 ** TODO Keybindings
 ** TODO Shell.FM global menu
-** [%] «Nifties»
+** [0/1] «Nifties»
+   - [ ] modeline lighter
 * Package functions
 ** TODO [12/12] General
    - [X] shellfm
@@ -34,17 +35,17 @@
    - [X] shellfm-station-similar-artists
    - [X] shellfm-kill
    - [X] shellfm-status
-** TODO [43%] Current track operation
+** TODO [68%] Current track operation
    - [X] shellfm-track-info
    - [ ] Album data in track info
    - [X] shellfm-skip-track
    - [X] shellfm-love-track
    - [X] shellfm-ban-track
-   - [0/4] Tagging
-     - [ ] shellfm-tag
-     - [ ] shellfm-tag-track
-     - [ ] shellfm-tag-artist
-     - [ ] shellfm-tag-album
+   - [4/4] Tagging
+     - [X] shellfm-tag
+     - [X] shellfm-tag-track
+     - [X] shellfm-tag-artist
+     - [X] shellfm-tag-album
    - [0/4] Recommending
      - [ ] shellfm-recommend
      - [ ] shellfm-recommend-track
@@ -64,6 +65,8 @@
    pass some `lastfm://` URL to `shell-fm` process. 
 
 * Manual
+** Prerequisites
+   Make sure you've got fresh Shell.fm installation (at least SVN 285).
 ** Installation
    Unpack emacs-shellfm tarball.
 

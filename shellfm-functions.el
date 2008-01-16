@@ -118,30 +118,29 @@ This function always returns nil."
 
 ;;;; Current track commands
 
-(defun shellfm-station-similar-artists ()
-  "Switch to listening to artists similar to that of current track."
-  (interactive)
-  (shellfm-command "s"))
+(defmacro define-shellfm-simple-command (command-name string &optional doc)
+  "Define a new command COMMAND-NAME activated by STRING sent to Shell.fm.
 
-(defun shellfm-station-fans ()
-  "Switch to station of current artist's fans."
-  (interactive)
-  (shellfm-command "f"))
+DOC is an optional documentation string."
+  `(defun ,command-name ()
+     ,doc
+     (interactive)
+     (shellfm-command ,string)))
 
-(defun shellfm-skip-track ()
-  "Skip current track."
-  (interactive)
-  (shellfm-command "n"))
+(define-shellfm-simple-command shellfm-station-similar-artists "s"
+  "Switch to listening to artists similar to that of current track.")
 
-(defun shellfm-love-track ()
-  "Mark current track as loved."
-  (interactive)
-  (shellfm-command "l"))
+(define-shellfm-simple-command shellfm-station-fans "f"
+  "Switch to station of current artist's fans.")
 
-(defun shellfm-ban-track ()
-  "Ban current track."
-  (interactive)
-  (shellfm-command "B"))
+(define-shellfm-simple-command shellfm-skip-track "n"
+  "Skip current track.")
+
+(define-shellfm-simple-command shellfm-love-track "l"
+  "Mark current track as loved.")
+
+(define-shellfm-simple-command shellfm-ban-track "B"
+  "Ban current track.")
 
 (defun shellfm-track-info ()
   "Show current track title and artist in echo area."
@@ -152,6 +151,36 @@ This function always returns nil."
                        shellfm-current-title))
     (message "Not available.")))
 
+(defmacro define-shellfm-tag-command (command-name tagging-type &optional doc)
+  "Define a new command to tag track, artist or album.
+
+COMMAND-NAME is a name to be given to a new function,
+TAGGING-TYPE is either \"t\", \"a\" or \"l\" for command tagging
+track, artist and album, respectively. DOC is an optional
+documentation string."
+  `(defun ,command-name (tags)
+     ,doc
+     (interactive "sComma-separated tags list: ")
+     (shellfm-command (concat "T" ,tagging-type tags))))
+
+(define-shellfm-tag-command shellfm-tag-track "t" "Tag current track")
+(define-shellfm-tag-command shellfm-tag-artist "a" "Tag current artist")
+(define-shellfm-tag-command shellfm-tag-album "l" "Tag current album")
+
+(defun shellfm-tag ()
+  "Tag current track, artist or album.
+
+Prompt user for what to tag and call an appropriate function."
+  (interactive)
+  (let* ((choice-map
+         '((?t . shellfm-tag-track)
+           (?a . shellfm-tag-artist)
+           (?l . shellfm-tag-album)))
+         (choice (read-char "Tag (t)rack, (a)rtist, a(l)bum?"))
+         (command (cdr (assoc choice choice-map))))
+    (when command
+      (call-interactively command))))
+
 
 ;;;; Global state polling and control commands
 
@@ -159,7 +188,7 @@ This function always returns nil."
   "Show current Shell.FM status in echo area."
   (interactive)
   (if (eq shellfm-status 'radio)
-      (message (concat "Listening to " shellfm-current-station))
+      (message (concat "Listening to" shellfm-current-station))
     (message (concat "Shell.FM is " (symbol-name shellfm-status)))))
 
 (defun shellfm-pause ()
