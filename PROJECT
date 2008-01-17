@@ -35,7 +35,7 @@
    - [X] shellfm-station-similar-artists
    - [X] shellfm-kill
    - [X] shellfm-status
-** TODO [88%] Current track operation
+** TODO [83%] Current track operation
    - [X] shellfm-track-info
    - [ ] Album data in track info
    - [X] shellfm-skip-track
@@ -55,10 +55,13 @@
    - [X] shellfm-similar-artists
    - [X] shellfm-pause
    - [X] shellfm-stop
+   - [ ] shellfm-add-to-playlist
 * Customizable options
-** TODO [2/2] General
+** TODO [4/4] General
    - [X] shellfm-executable
    - [X] shellfm-args
+   - [X] shellfm-track-hook
+   - [X] shellfm-status-hook
 * Issues
 ** DONE getopt+shell-fm is nasty with command line options:
    CLOSED: [2008-01-04 Птн 19:29]

@@ -59,6 +59,18 @@
   :type 'string
   :tag "Last.fm account")
 
+(defcustom shellfm-track-hook '(shellfm-track-info)
+  "Functions to be run when shell-fm starts streaming a new track."
+  :group 'shellfm
+  :type 'hook)
+
+(defcustom shellfm-status-hook '(shellfm-show-status)
+  "Functions to be run when shell-fm status changes.
+
+See `shellfm-set-status'."
+  :group 'shellfm
+  :type 'hook)
+
 
 ;;;; Shell-fm cache processing functions
 
@@ -139,7 +151,8 @@ stopped -- streaming has been stopped.")
   "Set shell-fm global status to STATUS.
 
 This is a setter function for `shellfm-status' variable."
-  (setq shellfm-status status))
+  (setq shellfm-status status)
+  (run-hooks 'shellfm-status-hook))
 
 (defun shellfm-set-track (title artist)
   "Store current track TITLE and ARTIST.
@@ -147,7 +160,8 @@ This is a setter function for `shellfm-status' variable."
 This is a setter function for `shellfm-current-artist' and
 `shellfm-current-title' variables."
   (setq shellfm-current-artist artist)
-  (setq shellfm-current-title title))
+  (setq shellfm-current-title title)
+  (run-hooks 'shellfm-track-hook))
 
 (defun shellfm-set-station (station)
   "Store current STATION.
@@ -160,7 +174,7 @@ variable."
 ;;;; Shell-fm subprocess filtering
 
 (defvar shellfm-nowplaying-regexp "Now playing \"\\(.+\\)\" by \\(.+\\)\."
-  "Regular expression to match \"Now playing <track> by <artist>.\" message in shell-fm output.
+  "Regular expression to match \"Now playing\" message in shell-fm output.
 
 It must contain two subexpressions, for track and artist
 respectively.")
@@ -168,7 +182,8 @@ respectively.")
 (defvar shellfm-station-regexp "^Receiving \\(.+\\).$"
   "Regular expression to match \"Receiving <station>.\" message in shell-fm output.
 
-This variable must contain one subexpression to match station name.")
+This variable must contain one subexpression to match station
+name.")
 
 (defun shellfm-process-filter (process data)
   "Filter function for shell-fm subprocess.
