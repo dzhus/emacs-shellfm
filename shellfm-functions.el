@@ -160,8 +160,8 @@ DOC is an optional documentation string."
   (interactive)
   (if (memq shellfm-status '(radio paused))
       (message (format "Currently playing %s — %s"
-                       shellfm-current-artist
-                       shellfm-current-title))
+                       (propertize shellfm-current-artist 'face 'bold)
+                       (propertize shellfm-current-title 'face 'bold)))
     (message "Not available.")))
 
 (defmacro define-shellfm-tag-command (command-name tagging-type &optional doc)
@@ -176,10 +176,12 @@ documentation string."
      (interactive)
      (let ((real-tags
             (if tags tags
+              ;; If called interactively, read tags one by one
               (let ((tag-list '()))
                 (while
                     (let ((tag (shellfm-completing-read
-                                (if (null tag-list) "Enter tag: "
+                                (if (null tag-list)
+                                    "Enter tag: "
                                   (concat "Enter next tag or hit RET to send "
                                           (number-to-string (length tag-list))
                                           " tag(s): "))
@@ -190,9 +192,14 @@ documentation string."
        (shellfm-command (concat "T" ,tagging-type
                                 (mapconcat (lambda (s) s) real-tags ","))))))
      
-(define-shellfm-tag-command shellfm-tag-track "t" "Tag current track")
-(define-shellfm-tag-command shellfm-tag-artist "a" "Tag current artist")
-(define-shellfm-tag-command shellfm-tag-album "l" "Tag current album")
+(define-shellfm-tag-command shellfm-tag-track "t"
+  "Tag current track")
+
+(define-shellfm-tag-command shellfm-tag-artist "a"
+  "Tag current artist")
+
+(define-shellfm-tag-command shellfm-tag-album "l"
+  "Tag current album")
 
 
 (defmacro define-shellfm-recommend-command (command-name recommending-type &optional doc)
@@ -206,14 +213,20 @@ is either \"a\", \"t\" or \"l\". DOC is an optional documentation string."
      (let ((recommendation
            (if (and recipient comment)
                (concat recipient "\n" comment)
-             (concat (shellfm-completing-read "Recipient: " shellfm-completion-recipients)
+             (concat (shellfm-completing-read "Recipient: "
+                                              shellfm-completion-recipients)
                      "\n"
                      (read-string "Comment: ")))))
        (shellfm-command (concat "R" ,recommending-type recommendation)))))
 
-(define-shellfm-recommend-command shellfm-recommend-track "t" "Recommend current track")
-(define-shellfm-recommend-command shellfm-recommend-artist "a" "Recommend current artist")
-(define-shellfm-recommend-command shellfm-recommend-album "l" "Recommend current album")
+(define-shellfm-recommend-command shellfm-recommend-track "t"
+  "Recommend current track")
+
+(define-shellfm-recommend-command shellfm-recommend-artist "a"
+  "Recommend current artist")
+
+(define-shellfm-recommend-command shellfm-recommend-album "l"
+  "Recommend current album")
 
 
 (defmacro define-shellfm-dispatching-command (command-name prompt choice-map &optional doc)
@@ -261,7 +274,8 @@ DOC is an optional documentation string."
   "Show current Shell.FM status in echo area."
   (interactive)
   (if (eq shellfm-status 'radio)
-      (message (concat "Listening to" shellfm-current-station))
+      (message (concat "Listening to"
+                       (propertize shellfm-current-station 'face 'bold)))
     (message (concat "Shell.FM is " (symbol-name shellfm-status)))))
 
 (defun shellfm-pause ()
