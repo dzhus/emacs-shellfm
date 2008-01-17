@@ -171,11 +171,25 @@ COMMAND-NAME is a name to be given to a new function,
 TAGGING-TYPE is either \"t\", \"a\" or \"l\" for command tagging
 track, artist and album, respectively. DOC is an optional
 documentation string."
-  `(defun ,command-name (tags)
+  `(defun ,command-name (&optional tags)
      ,doc
-     (interactive "sEnter comma-separated list of tags: ")
-     (shellfm-command (concat "T" ,tagging-type tags))))
-
+     (interactive)
+     (let ((real-tags
+            (if tags tags
+              (let ((tag-list '()))
+                (while
+                    (let ((tag (shellfm-completing-read
+                                (if (null tag-list) "Enter tag: "
+                                  (concat "Enter next tag or hit RET to send "
+                                          (number-to-string (length tag-list))
+                                          " tag(s): "))
+                                shellfm-completion-tags)))
+                      (if (string= "" tag) nil
+                        (add-to-list 'tag-list tag))))
+                tag-list))))
+       (shellfm-command (concat "T" ,tagging-type
+                                (mapconcat (lambda (s) s) real-tags ","))))))
+     
 (define-shellfm-tag-command shellfm-tag-track "t" "Tag current track")
 (define-shellfm-tag-command shellfm-tag-artist "a" "Tag current artist")
 (define-shellfm-tag-command shellfm-tag-album "l" "Tag current album")

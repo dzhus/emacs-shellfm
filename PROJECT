@@ -19,8 +19,9 @@
          become unavailable.
 ** TODO Keybindings
 ** TODO Shell.FM global menu
-** [0/1] «Nifties»
+** [0/2] «Nifties»
    - [ ] modeline lighter
+   - [ ] rich format status messages
 * Package functions
 ** TODO [13/13] General
    - [X] shellfm
@@ -36,18 +37,18 @@
    - [X] shellfm-station-playlist
    - [X] shellfm-kill
    - [X] shellfm-status
-** TODO [88%] Current track operation
+** TODO [94%] Current track operation
    - [X] shellfm-track-info
    - [ ] Album data in track info
    - [X] shellfm-skip-track
    - [X] shellfm-love-track
    - [X] shellfm-ban-track
-   - [4/5] Tagging
+   - [5/5] Tagging
      - [X] shellfm-tag
      - [X] shellfm-tag-track
      - [X] shellfm-tag-artist
      - [X] shellfm-tag-album
-     - [ ] autocomplete tags while tagging
+     - [X] autocomplete tags while tagging
    - [4/4] Recommending
      - [X] shellfm-recommend
      - [X] shellfm-recommend-track
