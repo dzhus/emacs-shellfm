@@ -84,13 +84,12 @@ insert itself, not for word completing."
   "Prompt for station, if needed and switch to it.
 
 Start a completing interactive prompt given PROMPT text,
-COMPLETION-TABLE, and switch to station using its NAMESPACE as in
-`shellfm-radio-command'. NAME is station name as in
-`shellfm-radio-command', used for non-interactive call."
-  (let ((real-arg
-         (if arg arg
+COMPLETION-TABLE, and switch to station using its NAMESPACE and NAME as in
+`shellfm-radio-command'."
+  (let ((real-name
+         (if name name
            (shellfm-completing-read prompt completion-table))))
-    (shellfm-radio-command namespace real-arg)))
+    (shellfm-radio-command namespace real-name)))
 
 (defun shellfm-station-tag (&optional tag)
   "Switch to global TAG station.
