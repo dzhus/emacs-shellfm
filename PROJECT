@@ -22,7 +22,7 @@
 ** [0/1] «Nifties»
    - [ ] modeline lighter
 * Package functions
-** TODO [12/12] General
+** TODO [13/13] General
    - [X] shellfm
    - [X] shellfm-url
    - [X] shellfm-station-tag
@@ -33,9 +33,10 @@
    - [X] shellfm-station-group
    - [X] shellfm-station-fans
    - [X] shellfm-station-similar-artists
+   - [X] shellfm-station-playlist
    - [X] shellfm-kill
    - [X] shellfm-status
-** TODO [83%] Current track operation
+** TODO [88%] Current track operation
    - [X] shellfm-track-info
    - [ ] Album data in track info
    - [X] shellfm-skip-track
@@ -55,7 +56,7 @@
    - [X] shellfm-similar-artists
    - [X] shellfm-pause
    - [X] shellfm-stop
-   - [ ] shellfm-add-to-playlist
+   - [X] shellfm-add-to-playlist
 * Customizable options
 ** TODO [4/4] General
    - [X] shellfm-executable

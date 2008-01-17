@@ -115,6 +115,11 @@ This function always returns nil."
   ;; obscurity level.
   (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
 
+(defun shellfm-station-playlist ()
+  "Switch to personal playlist station."
+  (interactive)
+  (shellfm-radio-command "user" (concat lastfm-user "/playlist")))
+
 (defun shellfm-station-group (group)
   "Switch to GROUP station."
   (interactive "sGroup: ")
@@ -146,6 +151,9 @@ DOC is an optional documentation string."
 
 (define-shellfm-simple-command shellfm-ban-track "B"
   "Ban current track.")
+
+(define-shellfm-simple-command shellfm-add-to-playlist "a"
+  "Add current track to personal playlist.")
 
 (defun shellfm-track-info ()
   "Show current track title and artist in echo area."
