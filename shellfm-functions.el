@@ -38,6 +38,11 @@
                                         (shellfm-get-private-tags))
   "A list of known tags to be used in minibuffer completion.")
 
+(defvar shellfm-completion-recipients (append (list lastfm-user)
+                                              (shellfm-get-friends)
+                                              (shellfm-get-neigbors))
+  "A list of known recipients to send recommendations to.")
+
 
 ;;;; Inline functions talking to shell-fm process
 
@@ -48,11 +53,9 @@ Newline is added automagically."
 
   (process-send-string "shell-fm" (concat string "\n")))
 
-(defsubst shellfm-radio-command (namespace value)
-  "Switch to Last.fm radio given its type and value.
-
-Switch to lastfm://NAMESPACE/VALUE radio"
-  (shellfm-url (concat namespace "/" value)))
+(defsubst shellfm-radio-command (namespace name)
+  "Switch to lastfm://NAMESPACE/NAME radio."
+  (shellfm-url (concat namespace "/" name)))
 
 
 ;;;; Radio tuning commands
@@ -64,31 +67,36 @@ You may omit lastfm:// part."
   (interactive "slasftm:// URL: ")
   (shellfm-command (concat "r" url)))
 
-(defun shellfm-station-completing (prompt completion-table namespace &optional arg)
+(defun shellfm-completing-read (prompt completion-table)
+  "Read user input interactively and return it.
+
+PROMPT is input message, COMPLETION-TABLE is a list of possible
+completions as in `completing-read'.
+
+Character case is ingored while completing, space is used to
+insert itself, not for word completing."
+  (let ((completion-ignore-case t)
+        (minibuffer-local-completion-map
+         (assq-delete-all 32 minibuffer-local-completion-map)))
+    (completing-read prompt completion-table)))
+
+(defun shellfm-station-completing (prompt completion-table namespace &optional name)
   "Prompt for station, if needed and switch to it.
 
 Start a completing interactive prompt given PROMPT text,
 COMPLETION-TABLE, and switch to station using its NAMESPACE as in
-`shellfm-radio-command'. ARG is station value in
-`shellfm-radio-command' used for non-interactive call."
+`shellfm-radio-command'. NAME is station name as in
+`shellfm-radio-command', used for non-interactive call."
   (let ((real-arg
          (if arg arg
-           ;; Override local minibuffer keymap to avoid blocking of
-           ;; tags with spaces
-           (let ((completion-ignore-case t)
-                 (minibuffer-local-completion-map
-                  (assq-delete-all 32 minibuffer-local-completion-map)))
-             (completing-read prompt completion-table)))))
+           (shellfm-completing-read prompt completion-table))))
     (shellfm-radio-command namespace real-arg)))
-
 
 (defun shellfm-station-tag (&optional tag)
   "Switch to global TAG station.
 
-Several tags separated with comma (like `rock,jazz,vocals`) may
+Several tags separated with comma (like \"rock,jazz,vocals\") may
 be passed.
-
-This function may be called non-interactively.
 
 This function always returns nil."
   (interactive)
@@ -96,8 +104,6 @@ This function always returns nil."
 
 (defun shellfm-station-artist (&optional artist)
   "Switch to similar ARTIST station.
-
-This function may be called non-interactively.
 
 This function always returns nil."
   (interactive)
@@ -160,26 +166,72 @@ track, artist and album, respectively. DOC is an optional
 documentation string."
   `(defun ,command-name (tags)
      ,doc
-     (interactive "sComma-separated tags list: ")
+     (interactive "sEnter comma-separated list of tags: ")
      (shellfm-command (concat "T" ,tagging-type tags))))
 
 (define-shellfm-tag-command shellfm-tag-track "t" "Tag current track")
 (define-shellfm-tag-command shellfm-tag-artist "a" "Tag current artist")
 (define-shellfm-tag-command shellfm-tag-album "l" "Tag current album")
 
-(defun shellfm-tag ()
-  "Tag current track, artist or album.
 
-Prompt user for what to tag and call an appropriate function."
-  (interactive)
-  (let* ((choice-map
-         '((?t . shellfm-tag-track)
-           (?a . shellfm-tag-artist)
-           (?l . shellfm-tag-album)))
-         (choice (read-char "Tag (t)rack, (a)rtist, a(l)bum?"))
-         (command (cdr (assoc choice choice-map))))
-    (when command
-      (call-interactively command))))
+(defmacro define-shellfm-recommend-command (command-name recommending-type &optional doc)
+  "Define a new recommendation command.
+
+COMMAND-NAME is a name to be given to function, RECOMMENDING-TYPE
+is either \"a\", \"t\" or \"l\". DOC is an optional documentation string."
+  `(defun ,command-name (&optional recipient comment)
+     ,doc
+     (interactive)
+     (let ((recommendation
+           (if (and recipient comment)
+               (concat recipient "\n" comment)
+             (concat (shellfm-completing-read "Recipient: " shellfm-completion-recipients)
+                     "\n"
+                     (read-string "Comment: ")))))
+       (shellfm-command (concat "R" ,recommending-type recommendation)))))
+
+(define-shellfm-recommend-command shellfm-recommend-track "t" "Recommend current track")
+(define-shellfm-recommend-command shellfm-recommend-artist "a" "Recommend current artist")
+(define-shellfm-recommend-command shellfm-recommend-album "l" "Recommend current album")
+
+
+(defmacro define-shellfm-dispatching-command (command-name prompt choice-map &optional doc)
+  "Define an interactive command prompting user for further actions.
+
+COMMAND-NAME will ask user with `read-char' using PROMPT and call
+another function depending on his choice. CHOICE-MAP is an alist
+where key is a character provided by user and value is a function
+to call in that case.
+
+Example for CHOICE-MAP: 
+
+    '((?p . play) (?x . exit))
+
+In case user entered a character missing in CHOICE-MAP, nothing
+happens.
+
+DOC is an optional documentation string."
+  `(defun ,command-name ()
+     ,doc
+     (interactive)
+     (let* ((choice (read-char ,prompt))
+            (command (cdr (assoc choice ,choice-map))))
+       (when command
+         (call-interactively command)))))
+
+(define-shellfm-dispatching-command shellfm-tag
+  "Tag (t)rack, (a)rtist or a(l)bum?"
+  '((?t . shellfm-tag-track)
+    (?a . shellfm-tag-artist)
+    (?l . shellfm-tag-album))
+  "Tag current track, artist or album.")
+
+(define-shellfm-dispatching-command shellfm-recommend
+  "Recommend (t)rack, (a)rtist or a(l)bum?"
+  '((?t . shellfm-recommend-track)
+    (?a . shellfm-recommend-artist)
+    (?l . shellfm-recommend-album))
+  "Recommend current track, artist or album to another user.")
 
 
 ;;;; Global state polling and control commands

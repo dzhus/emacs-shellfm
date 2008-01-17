@@ -35,22 +35,23 @@
    - [X] shellfm-station-similar-artists
    - [X] shellfm-kill
    - [X] shellfm-status
-** TODO [68%] Current track operation
+** TODO [88%] Current track operation
    - [X] shellfm-track-info
    - [ ] Album data in track info
    - [X] shellfm-skip-track
    - [X] shellfm-love-track
    - [X] shellfm-ban-track
-   - [4/4] Tagging
+   - [4/5] Tagging
      - [X] shellfm-tag
      - [X] shellfm-tag-track
      - [X] shellfm-tag-artist
      - [X] shellfm-tag-album
-   - [0/4] Recommending
-     - [ ] shellfm-recommend
-     - [ ] shellfm-recommend-track
-     - [ ] shellfm-recommend-artist
-     - [ ] shellfm-recommend-album
+     - [ ] autocomplete tags while tagging
+   - [4/4] Recommending
+     - [X] shellfm-recommend
+     - [X] shellfm-recommend-track
+     - [X] shellfm-recommend-artist
+     - [X] shellfm-recommend-album
    - [X] shellfm-similar-artists
    - [X] shellfm-pause
    - [X] shellfm-stop

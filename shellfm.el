@@ -60,17 +60,15 @@
   :tag "Last.fm account")
 
 
-;;;; Miscellaneous internal functions
+;;;; Shell-fm cache processing functions
 
 (defun pattern-parse-file (file pattern)
-  "Extract strings from FILE matching first subexpression of PATTERN.
+  "Return a list of strings from FILE matching first subexpression of PATTERN.
 
-FILE is an ordinary filename.
+FILE is an ordinary filename as in `insert-file-contents'.
 
 PATTERN is a regular expression which has at least one
-subexpression.
-
-This function return a list of matching strings."
+subexpression."
   (with-temp-buffer
     (insert-file-contents file)
     (let ((result '()))
@@ -97,6 +95,16 @@ This function return a list of matching strings."
   "Get a list of user's top artists from shell-fm cache."
   (pattern-parse-file "~/.shell-fm/cache/top-artists"
                       "^.*,\\(.+\\)$"))
+
+(defun shellfm-get-friends ()
+  "Get a list of user's friends from shell-fm cache."
+  (pattern-parse-file "~/.shell-fm/cache/friends"
+                     "^\\(.+\\)$"))
+
+(defun shellfm-get-neigbors ()
+  "Get a list of user's neighbors from shell-fm cache."
+  (pattern-parse-file "~/.shell-fm/cache/neighbors"
+                     "^[0-9.]+,\\(.+\\)$"))
 
 (defun shellfm-get-private-tags ()
   "Get a list of user's own Last.fm tags from shell-fm cache."
