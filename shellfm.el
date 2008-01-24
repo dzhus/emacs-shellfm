@@ -35,11 +35,11 @@
   :group 'multimedia
   :tag "Shell.FM")
 
-(defcustom shellfm-executable "/usr/bin/shell-fm"
+(defcustom shellfm-program "/usr/bin/shell-fm"
   "Path to shell-fm executable."
   :group 'shellfm
   :type 'string
-  :tag "Shell-fm executable")
+  :tag "Shell-fm program path")
 
 (defcustom shellfm-args ""
   "Addition command line options to be passed to shell-fm."
@@ -211,7 +211,7 @@ Reads shell-fm output and updates `shellfm-current-title',
   (if (not (shellfm-running-p))
       (progn (require 'shellfm-functions)
              (let ((sp
-                    (start-process "shell-fm" nil shellfm-executable
+                    (start-process "shell-fm" nil shellfm-program
                                    (concat "-b" shellfm-args) lastfm-default-url)))
                (set-process-filter sp 'shellfm-process-filter))
              (shellfm-set-status 'started))
