@@ -38,7 +38,7 @@
                                         (shellfm-get-private-tags))
   "A list of known tags to be used in minibuffer completion.")
 
-(defvar shellfm-completion-recipients (append (list lastfm-user)
+(defvar shellfm-completion-recipients (append (list (shellfm-get-lastfm-user))
                                               (shellfm-get-friends)
                                               (shellfm-get-neigbors))
   "A list of known recipients to send recommendations to.")
@@ -113,12 +113,12 @@ This function always returns nil."
   (interactive)
   ;; 100 is unknown magic constant. I'm uncertain if this is really an
   ;; obscurity level.
-  (shellfm-radio-command "user" (concat lastfm-user "/recommended/100/")))
+  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/recommended/100/")))
 
 (defun shellfm-station-playlist ()
   "Switch to personal playlist station."
   (interactive)
-  (shellfm-radio-command "user" (concat lastfm-user "/playlist")))
+  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/playlist")))
 
 (defun shellfm-station-group (group)
   "Switch to GROUP station."

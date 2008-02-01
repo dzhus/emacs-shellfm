@@ -19,9 +19,9 @@
          become unavailable.
 ** TODO Keybindings
 ** TODO Shell.FM global menu
-** [0/2] «Nifties»
+** [1/2] «Nifties»
    - [ ] modeline lighter
-   - [ ] rich format status messages
+   - [X] rich format status messages
 * Package functions
 ** TODO [13/13] General
    - [X] shellfm

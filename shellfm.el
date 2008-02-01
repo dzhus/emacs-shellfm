@@ -53,12 +53,6 @@
   :type '(choice string (const :tag "Empty URL" "lastfm://"))
   :tag "Last.fm default URL")
 
-(defcustom lastfm-user ""
-  "Your Last.fm account name."
-  :group 'shellfm
-  :type 'string
-  :tag "Last.fm account")
-
 (defcustom shellfm-track-hook '(shellfm-track-info)
   "Functions to be run when shell-fm starts streaming a new track."
   :group 'shellfm
@@ -91,10 +85,10 @@ subexpression."
 (defvar shellfm-tag-pattern "[ a-z0-9-]*"
   "Regular expression to match Last.fm tags.")
 
-;; (defun shellfm-get-lasftm-user ()
-;;   "Extract Last.fm username from shell-fm config."
-;;   (car (pattern-parse-file "~/.shell-fm/shell-fm.rc"
-;;                            "^username = \\(.+\\)$")))
+(defun shellfm-get-lastfm-user ()
+  "Extract Last.fm username from shell-fm config."
+  (car (pattern-parse-file "~/.shell-fm/shell-fm.rc"
+                           "^username = \\(.+\\)$")))
 
 (defun shellfm-get-overall-tags ()
   "Get a list of most popular Last.fm tags from shell-fm cache."
@@ -120,7 +114,7 @@ subexpression."
 
 (defun shellfm-get-private-tags ()
   "Get a list of user's own Last.fm tags from shell-fm cache."
-  (pattern-parse-file (concat "~/.shell-fm/cache/usertags-" lastfm-user)
+  (pattern-parse-file (concat "~/.shell-fm/cache/usertags-" (shellfm-get-lastfm-user))
                       (concat "^.+,\\("
                               shellfm-tag-pattern
                               "\\),.+$")))
