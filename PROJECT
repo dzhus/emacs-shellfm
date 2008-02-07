@@ -5,23 +5,25 @@
   Last.fm player) subprocess
 ** User functions
    Sending commands to shell-fm subprocess.
-** TODO [#D] Minor mode
-   Probably emacs-shellfm should act like a minor mode.
-   [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
 ** DONE [#A] Parsing shell-fm output
    CLOSED: [2008-01-05 Сбт 23:20]
    Filter function should inform user about shell-fm status
-** [0%] Robustness
+** [0%] «Robustness» :-)
    - [0/1] Handle unexpected shell-fm output
      - [ ] Unset login/password
    - [ ] Unset Last.fm username
          `shellfm-station-recommended` and `shellfm-get-private-tags`
          become unavailable.
 ** TODO Keybindings
-** TODO Shell.FM global menu
+** IN PROGRESS [#A] Merge package into one file
+   Autoloading should be used for functions in `shellfm-functions.el`
 ** [1/2] «Nifties»
    - [ ] modeline lighter
    - [X] rich format status messages
+** IN PROGRESS Shell.FM global menu
+** TODO [#D] Minor mode
+   Probably emacs-shellfm should act like a minor mode.
+   [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
 * Package functions
 ** TODO [13/13] General
    - [X] shellfm
@@ -59,11 +61,12 @@
    - [X] shellfm-stop
    - [X] shellfm-add-to-playlist
 * Customizable options
-** TODO [4/4] General
+** IN PROGRESS [4/5] General
    - [X] shellfm-executable
    - [X] shellfm-args
    - [X] shellfm-track-hook
    - [X] shellfm-status-hook
+   - [ ] shellfm-global-menu
 * Issues
 ** DONE getopt+shell-fm is nasty with command line options:
    CLOSED: [2008-01-04 Птн 19:29]
