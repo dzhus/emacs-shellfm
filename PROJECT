@@ -15,8 +15,6 @@
          `shellfm-station-recommended` and `shellfm-get-private-tags`
          become unavailable.
 ** TODO Keybindings
-** IN PROGRESS [#A] Merge package into one file
-   Autoloading should be used for functions in `shellfm-functions.el`
 ** [1/2] «Nifties»
    - [ ] modeline lighter
    - [X] rich format status messages

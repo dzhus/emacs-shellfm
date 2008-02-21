@@ -294,13 +294,19 @@ This function always returns nil."
 
 ;;;; Current track commands
 
-(defmacro define-shellfm-simple-command (command-name string &optional doc)
+(defmacro define-shellfm-simple-command (command-name string &optional doc prompt)
   "Define a new command COMMAND-NAME activated by STRING sent to Shell.fm.
 
-DOC is an optional documentation string."
+DOC is an optional documentation string.
+
+If PROMPT provided, command is sent only if user gives a positive
+answer to yes-or-no query with PROMPT."
   `(defun ,command-name ()
      ,doc
      (interactive)
+     (message (boundp 'prompt))
+     (if (and (boundp 'prompt) (not (y-or-n-p prompt)))
+         (error "Command aborted"))
      (shellfm-command ,string)))
 
 (define-shellfm-simple-command shellfm-station-similar-artists "s"
@@ -310,13 +316,13 @@ DOC is an optional documentation string."
   "Switch to station of current artist's fans.")
 
 (define-shellfm-simple-command shellfm-skip-track "n"
-  "Skip current track.")
+  "Skip current track." "Really skip?")
 
 (define-shellfm-simple-command shellfm-love-track "l"
   "Mark current track as loved.")
 
 (define-shellfm-simple-command shellfm-ban-track "B"
-  "Ban current track.")
+  "Ban current track." "Do you really want to ban current track? ")
 
 (define-shellfm-simple-command shellfm-add-to-playlist "a"
   "Add current track to personal playlist.")
@@ -465,68 +471,55 @@ DOC is an optional documentation string."
 
 (defvar shellfm-keymap-prefix "\C-c,")
 
-;;; This code _must_ be rewritten using macros
+(defun define-shellfm-menu-keys (menu-map defs)
+  (mapcar
+   (lambda (def)
+     (apply 'define-key menu-map `([,(cdr def)] ,def)))
+   defs))
+
+;;; Menu bar
 (let ((shellfm-menu-map (make-sparse-keymap))
       (shellfm-station-menu-map (make-sparse-keymap))
       (shellfm-tag-menu-map (make-sparse-keymap))
       (shellfm-recommend-menu-map (make-sparse-keymap)))
+  
   ;; Tag
-  (define-key shellfm-tag-menu-map [shellfm-tag-track]
-    '("Track" . shellfm-tag-track))
-  (define-key shellfm-tag-menu-map [shellfm-tag-artist]
-    '("Artist" . shellfm-tag-artist))
-  (define-key shellfm-tag-menu-map [shellfm-tag-album]
-    '("Album" . shellfm-tag-album))
-
+  (define-shellfm-menu-keys shellfm-tag-menu-map
+    '(("Track" . shellfm-tag-track)
+      ("Artist" . shellfm-tag-artist)
+      ("Album" . shellfm-tag-album)))
+  
   ;; Recommend
-  (define-key shellfm-recommend-menu-map [shellfm-recommend-track]
-    '("Track" . shellfm-recommend-track))
-  (define-key shellfm-recommend-menu-map [shellfm-recommend-artist]
-    '("Artist" . shellfm-recommend-artist))
-  (define-key shellfm-recommend-menu-map [shellfm-recommend-album]
-    '("Album" . shellfm-recommend-album))
+  (define-shellfm-menu-keys shellfm-recommend-menu-map
+    '(("Track" . shellfm-recommend-track)
+      ("Artist" . shellfm-recommend-artist)
+      ("Album" . shellfm-recommend-album)))
 
   ;; Station
-  (define-key shellfm-station-menu-map [shellfm-group]
-    '("Group radio" . shellfm-station-radio))
-  (define-key shellfm-station-menu-map [shellfm-artist]
-    '("Similar to artist" . shellfm-station-artist))
-  (define-key shellfm-station-menu-map [shellfm-fans]
-    '("Fans" . shellfm-station-fans))
-  (define-key shellfm-station-menu-map [shellfm-playlist]
-    '("Personal playlist" . shellfm-station-playlist))
-  (define-key shellfm-station-menu-map [shellfm-url]
-    '("URL" . shellfm-url))
-  (define-key shellfm-station-menu-map [shellfm-tag]
-    '("Global tag" . shellfm-station-tag))
-  (define-key shellfm-station-menu-map [shellfm-recommended]
-    '("Recommended tracks" . shellfm-station-recommended))
+  (define-shellfm-menu-keys shellfm-station-menu-map
+    '(("Group radio" . shellfm-station-radio)
+      ("Similar to artist" . shellfm-station-artist)
+      ("Fans" . shellfm-station-fans)
+      ("Personal playlist" . shellfm-station-playlist)
+      ("URL" . shellfm-url)
+      ("Global tag" . shellfm-station-tag)
+      ("Recommended tracks" . shellfm-station-recommended)))
 
   ;; General
-  (define-key shellfm-menu-map [shellfm-status]
-    '("Show Shell.FM status" . shellfm-show-status))
-  (define-key shellfm-menu-map [shellfm-track-info]
-    '("Show track info" . shellfm-track-info))
-  (define-key shellfm-menu-map [shellfm-recommend]
-    `("Recommend" . ,shellfm-recommend-menu-map))
-  (define-key shellfm-menu-map [shellfm-tag]
-    `("Tag" . ,shellfm-tag-menu-map))
-  (define-key shellfm-menu-map [shellfm-love]
-    '("Love track" . shellfm-love-track))
-  (define-key shellfm-menu-map [shellfm-add-playlist]
-    '("Add to playlist" . shellfm-add-to-playlist))
-  (define-key shellfm-menu-map [shellfm-skip]
-    '("Skip track" . shellfm-skip-track))
-  (define-key shellfm-menu-map [shellfm-ban]
-    '("Ban track" . shellfm-ban-track))
-  (define-key shellfm-menu-map [stop]
-    '("Stop" . shellfm-stop))
-  (define-key shellfm-menu-map [shellfm-pause]
-    '("Pause/Play" . shellfm-pause))
-  (define-key shellfm-menu-map [shellfm-station]
-    `("Switch to station" . ,shellfm-station-menu-map))
-  (define-key shellfm-menu-map [shellfm-start]
-    '("Launch/kill Shell.FM" . shellfm))
+  (define-shellfm-menu-keys shellfm-menu-map
+    `(("Show Shell.FM status" . shellfm-show-status)
+      ("Show track info" . shellfm-track-info)
+      ("Recommend" . ,shellfm-recommend-menu-map)
+      ("Tag" . ,shellfm-tag-menu-map)
+      ("Love track" . shellfm-love-track)
+      ("Add to playlist" . shellfm-add-to-playlist)
+      ("Skip track" . shellfm-skip-track)
+      ("Ban track" . shellfm-ban-track)
+      ("Stop" . shellfm-stop)
+      ("Pause/Play" . shellfm-pause)
+      ("Switch to station" . ,shellfm-station-menu-map)
+      ("Launch/kill Shell.FM" . shellfm)))
+  
   (define-key-after global-map [menu-bar shellfm] (cons "Shell.FM" shellfm-menu-map)))
 
 
