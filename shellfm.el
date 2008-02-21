@@ -109,7 +109,7 @@ subexpression."
   (pattern-parse-file "~/.shell-fm/cache/friends"
                      "^\\(.+\\)$"))
 
-(defun shellfm-get-neigbors ()
+(defun shellfm-get-neighbors ()
   "Get a list of user's neighbors from shell-fm cache."
   (pattern-parse-file "~/.shell-fm/cache/neighbors"
                      "^[0-9.]+,\\(.+\\)$"))
@@ -206,7 +206,7 @@ Reads shell-fm output and updates `shellfm-current-title',
 
 (defvar shellfm-completion-recipients (append (list (shellfm-get-lastfm-user))
                                               (shellfm-get-friends)
-                                              (shellfm-get-neigbors))
+                                              (shellfm-get-neighbors))
   "A list of known recipients to send recommendations to.")
 
 
@@ -468,8 +468,6 @@ DOC is an optional documentation string."
 
 
 ;;;; Global keymap
-
-(defvar shellfm-keymap-prefix "\C-c,")
 
 (defun define-shellfm-menu-keys (menu-map defs)
   (mapcar
