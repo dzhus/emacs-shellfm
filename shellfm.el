@@ -181,6 +181,9 @@ respectively.")
 This variable must contain one subexpression to match station
 name.")
 
+(defvar shellfm-login-regexp "^Login: $"
+  "Regular expression to match shell-fm login prompt.")
+
 (defun shellfm-process-filter (process data)
   "Filter function for shell-fm subprocess.
 
@@ -192,7 +195,10 @@ Reads shell-fm output and updates `shellfm-current-title',
                                (match-string 2 data)))
   (when (string-match shellfm-station-regexp data)
     (shellfm-set-station (match-string 1 data))
-    (shellfm-set-status 'radio)))
+    (shellfm-set-status 'radio))
+  (when (string-match shellfm-login-regexp data)
+    (shellfm -1)
+    (error "Set your Last.fm account data in ~/.shell-fm/shell-fm.rc")))
 
 
 ;;;; Completion lists
@@ -242,6 +248,7 @@ completions as in `completing-read'.
 Character case is ingored while completing, space is used to
 insert itself, not for word completing."
   (let ((completion-ignore-case t)
+        ;; Break space default behavior
         (minibuffer-local-completion-map
          (assq-delete-all 32 minibuffer-local-completion-map)))
     (completing-read prompt completion-table)))
@@ -533,10 +540,12 @@ DOC is an optional documentation string."
         t)
     nil))
 
-(defun shellfm ()
-  "Start or stop shell-fm subprocess."
-  (interactive)
-  (if (not (shellfm-running-p))
+(defun shellfm (&optional arg)
+  "Start or stop shell-fm subprocess.
+
+When prefix ARG is -1, force shell-fm killing."
+  (interactive "p")
+  (if (and (not (= arg -1)) (not (shellfm-running-p)))
       (progn 
         (let ((sp
                (start-process "shell-fm" nil shellfm-program

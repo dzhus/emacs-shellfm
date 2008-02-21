@@ -8,12 +8,13 @@
 ** DONE [#A] Parsing shell-fm output
    CLOSED: [2008-01-05 Сбт 23:20]
    Filter function should inform user about shell-fm status
-** [0%] «Robustness» :-)
-   - [0/1] Handle unexpected shell-fm output
-     - [ ] Unset login/password
-   - [ ] Unset Last.fm username
-         `shellfm-station-recommended` and `shellfm-get-private-tags`
-         become unavailable.
+** [100%] «Robustness» :-)
+   - [1/1] Handle unexpected shell-fm output
+     - [X] Unset login/password
+   - [X] Unset Last.fm username
+         Emacs-shellfm extracts account name from `shell-fm.rc` which
+         is guaranteed to be correct as `shell-fm(1)` uses this data
+         to connect to the Last.fm servers
 ** TODO Keybindings
 ** [1/2] «Nifties»
    - [ ] modeline lighter
