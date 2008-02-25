@@ -479,7 +479,7 @@ DOC is an optional documentation string."
 (defun define-shellfm-menu-keys (menu-map defs)
   (mapcar
    (lambda (def)
-     (apply 'define-key menu-map `([,(cdr def)] ,def)))
+     (apply 'define-key-after menu-map `([,(cdr def)] ,def)))
    defs))
 
 ;;; Menu bar
