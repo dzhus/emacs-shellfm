@@ -502,29 +502,36 @@ DOC is an optional documentation string."
 
   ;; Station
   (define-shellfm-menu-keys shellfm-station-menu-map
-    '(("Group radio" . shellfm-station-radio)
+    '(("Group radio" . shellfm-station-group)
       ("Similar to artist" . shellfm-station-artist)
       ("Fans" . shellfm-station-fans)
       ("Personal playlist" . shellfm-station-playlist)
       ("URL" . shellfm-url)
       ("Global tag" . shellfm-station-tag)
       ("Recommended tracks" . shellfm-station-recommended)))
+  
+  (define-key-after shellfm-menu-map [shellfm-station]
+    `("Station" . ,shellfm-station-menu-map))
 
+  (define-key-after shellfm-menu-map [shellfm-recommend]
+    `("Recommend" . ,shellfm-recommend-menu-map))
+
+  (define-key-after shellfm-menu-map [shellfm-tag]
+    `("Tag" . ,shellfm-tag-menu-map))
+  
   ;; General
   (define-shellfm-menu-keys shellfm-menu-map
-    `(("Show Shell.FM status" . shellfm-show-status)
-      ("Show track info" . shellfm-track-info)
-      ("Recommend" . ,shellfm-recommend-menu-map)
-      ("Tag" . ,shellfm-tag-menu-map)
+    '(("Switch to station" . ,shellfm-station-menu-map)
       ("Love track" . shellfm-love-track)
       ("Add to playlist" . shellfm-add-to-playlist)
       ("Skip track" . shellfm-skip-track)
       ("Ban track" . shellfm-ban-track)
       ("Stop" . shellfm-stop)
       ("Pause/Play" . shellfm-pause)
-      ("Switch to station" . ,shellfm-station-menu-map)
+      ("Show Shell.FM status" . shellfm-show-status)
+      ("Show track info" . shellfm-track-info)
       ("Launch/kill Shell.FM" . shellfm)))
-  
+
   (define-key-after global-map [menu-bar shellfm] (cons "Shell.FM" shellfm-menu-map)))
 
 
