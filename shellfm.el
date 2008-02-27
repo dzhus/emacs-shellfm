@@ -222,8 +222,9 @@ Reads shell-fm output and updates `shellfm-current-title',
   "Send a STRING to the shell-fm subprocess.
 
 Newline is added automagically."
-  (when (shellfm-running-p)
-    (process-send-string "shell-fm" (concat string "\n"))))
+  (if (shellfm-running-p)
+      (process-send-string "shell-fm" (concat string "\n"))
+    (shellfm-show-status)))
 
 (defsubst shellfm-radio-command (namespace name)
   "Switch to lastfm://NAMESPACE/NAME radio."
