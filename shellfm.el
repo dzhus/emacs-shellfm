@@ -522,8 +522,7 @@ DOC is an optional documentation string."
   
   ;; General
   (define-shellfm-menu-keys shellfm-menu-map
-    '(("Switch to station" . ,shellfm-station-menu-map)
-      ("Love track" . shellfm-love-track)
+    '(("Love track" . shellfm-love-track)
       ("Add to playlist" . shellfm-add-to-playlist)
       ("Skip track" . shellfm-skip-track)
       ("Ban track" . shellfm-ban-track)
