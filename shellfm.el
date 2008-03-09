@@ -309,13 +309,15 @@ DOC is an optional documentation string.
 
 If PROMPT provided, command is sent only if user gives a positive
 answer to yes-or-no query with PROMPT."
-  `(defun ,command-name ()
-     ,doc
-     (interactive)
-     (message (boundp 'prompt))
-     (if (and (boundp 'prompt) (not (y-or-n-p prompt)))
-         (error "Command aborted"))
-     (shellfm-command ,string)))
+  (let ((confirm-command
+         (if prompt
+             `(if (not (y-or-n-p ,prompt)) (error "Command aborted"))
+           (progn))))
+    `(defun ,command-name ()
+       ,doc
+       (interactive)
+       ,confirm-command
+       (shellfm-command ,string))))
 
 (define-shellfm-simple-command shellfm-station-similar-artists "s"
   "Switch to listening to artists similar to that of current track.")
