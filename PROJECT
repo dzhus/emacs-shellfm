@@ -19,7 +19,7 @@
 ** [1/2] «Nifties»
    - [ ] modeline lighter
    - [X] rich format status messages
-** IN PROGRESS Shell.FM global menu
+** DONE Shell.FM global menu
 ** TODO [#D] Minor mode
    Probably emacs-shellfm should act like a minor mode.
    [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
@@ -74,7 +74,7 @@
 
 * Manual
 ** Prerequisites
-   Make sure you've got fresh Shell.fm installation (at least SVN 285).
+   Make sure you've got fresh Shell-fm installation (at least SVN 285).
 ** Installation
    Unpack emacs-shellfm tarball.
 
@@ -87,16 +87,23 @@
 
    Reload your `~/.emacs.el`. Customize `shellfm` group.
 ** Using emacs-shellfm
-*** Launching Shell.FM
-    You may call `shellfm` function which will start Shell.FM
+*** Launching Shell-FM
+    You may call `shellfm` function which will start Shell-FM
     subprocess and tune to default Last.fm radio provided you've
     specified one in `lastfm-default-url` customization variable.
-*** Shell.FM functions
-    Then you may see all the Shell.FM functions by typing `C-h a
+*** Shell-FM functions
+    Then you may see all the Shell-FM functions by typing `C-h a
     shellfm`.
 
     You may stop listening using `shellfm-pause` or `shellfm-stop`.
-    Kill Shell.FM using `shellfm-kill` function.
+    Kill Shell-FM using `shellfm-kill` function.
 *** Tips
     In case you have keyboard with additional multimedia keys, it may
     be cool to bind them all to `shellfm-` functions.
+
+** Further information
+   You may read an original emacs-shellfm announcement at
+   http://sphinx.net.ru/blog/entry/emacs-shellfm/.
+
+   Please report any bugs and issues related to emacs-shellfm to me
+   via mail@sphinx.net.ru.
