@@ -193,7 +193,7 @@ Reads shell-fm output and updates `shellfm-current-title',
 `shellfm-status' variables."
   (when (string-match shellfm-nowplaying-regexp data)
     (shellfm-set-track (match-string 1 data)
-                               (match-string 2 data)))
+                       (match-string 2 data)))
   (when (string-match shellfm-station-regexp data)
     (shellfm-set-station (match-string 1 data))
     (shellfm-set-status 'radio))
@@ -335,8 +335,16 @@ answer to yes-or-no query with PROMPT."
 (define-shellfm-simple-command shellfm-ban-track "B"
   "Ban current track." "Do you really want to ban current track? ")
 
+(define-shellfm-simple-command shellfm-ban-artist "A"
+   "Whenever a track  of current artist is played
+from now on, it is automatically banned."
+   "Do you really want to ban current artist?")
+
 (define-shellfm-simple-command shellfm-add-to-playlist "a"
   "Add current track to personal playlist.")
+
+(define-shellfm-simple-command shellfm-unlove-track "U"
+  "Cancel previous love mark upon current track.")
 
 (defun shellfm-track-info ()
   "Show current track title and artist in echo area."
@@ -526,9 +534,11 @@ DOC is an optional documentation string."
   ;; General
   (define-shellfm-menu-keys shellfm-menu-map
     '(("Love track" . shellfm-love-track)
+      ("Unlove track" . shellfm-unlove-track)
       ("Add to playlist" . shellfm-add-to-playlist)
       ("Skip track" . shellfm-skip-track)
       ("Ban track" . shellfm-ban-track)
+      ("Ban artist" . shellfm-ban-artist)
       ("Stop" . shellfm-stop)
       ("Pause/Play" . shellfm-pause)
       ("Show Shell.FM status" . shellfm-show-status)
