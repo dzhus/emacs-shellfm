@@ -1,8 +1,9 @@
 -*-org-*-
 
-* Package structure
-  A package provides Emacs Lisp interface to control shell-fm (console
-  Last.fm player) subprocess
+* Dev notes
+** Package structure
+   A package provides Emacs Lisp interface to control shell-fm (console
+   Last.fm player) subprocess
 ** User functions
    Sending commands to shell-fm subprocess.
 ** DONE [#A] Parsing shell-fm output
@@ -36,7 +37,7 @@
       level in addition to subprocess textual exchange.
    2. Override `np-file-format` option when launching `shell-fm(1)` to
       "%a;%t;%l%d;%s;%R".
-* Package functions
+** Package functions
 ** TODO [13/13] General
    - [X] shellfm
    - [X] shellfm-url
@@ -72,14 +73,14 @@
    - [X] shellfm-pause
    - [X] shellfm-stop
    - [X] shellfm-add-to-playlist
-* Customizable options
+** Customizable options
 ** IN PROGRESS [4/5] General
    - [X] shellfm-executable
    - [X] shellfm-args
    - [X] shellfm-track-hook
    - [X] shellfm-status-hook
    - [ ] shellfm-global-menu
-* Issues
+** Issues
 ** DONE getopt+shell-fm is nasty with command line options:
    CLOSED: [2008-01-04 Птн 19:29]
    `shell-fm -b ""` — yields «Bad lastfm:// URL» error. Fix: always
@@ -102,9 +103,6 @@
    Reload your `~/.emacs.el`. Customize `shellfm` options group.
 ** Using emacs-shellfm
 *** Launching Shell-FM
-    Emacs-shellfm won't work correctly unless you set up your Last.fm
-    login and password in `~/.shell-fm/shell-fm.rc`.
-
     You may call `shellfm` function which will start Shell-FM
     subprocess and tune to default Last.fm radio provided you've
     specified one in `lastfm-default-url` customization variable.
@@ -117,15 +115,20 @@
 *** Tips
     In case you have keyboard with additional multimedia keys, it may
     be cool to bind them all to `shellfm-` functions.
+
+** Further information
+   You may read an original emacs-shellfm announcement at
+   http://sphinx.net.ru/blog/entry/emacs-shellfm/ (in Russian).
+
+   Please report any bugs and issues related to emacs-shellfm to me
+   via dima@sphinx.net.ru.
+
+** Known issues
+*** Login data
+    Emacs-shellfm won't work correctly unless you set up your Last.fm
+    login and password in `~/.shell-fm/shell-fm.rc`.
 *** np-file-pormat
     Please note that emacs-shellfm may not work properly if you
     changed `np-file-format` option in your `shell-fm.rc` (so you may
     not see the track duration or remaining seconds of the played
     track).
-
-** Further information
-   You may read an original emacs-shellfm announcement at
-   http://sphinx.net.ru/blog/entry/emacs-shellfm/.
-
-   Please report any bugs and issues related to emacs-shellfm to me
-   via mail@sphinx.net.ru.
