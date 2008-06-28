@@ -77,12 +77,13 @@ FILE is an ordinary filename as in `insert-file-contents'.
 
 PATTERN is a regular expression which has at least one
 subexpression."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (let ((result '()))
-      (while (re-search-forward pattern nil t)
-        (add-to-list 'result (match-string-no-properties 1)))
-      result)))
+  (if (file-readable-p file)
+      (with-temp-buffer
+	(insert-file-contents file)
+	(let ((result '()))
+	  (while (re-search-forward pattern nil t)
+	    (add-to-list 'result (match-string-no-properties 1)))
+	  result))))
 
 (defvar shellfm-tag-pattern "[ a-z0-9-]*"
   "Regular expression to match Last.fm tags.")
