@@ -350,9 +350,9 @@ from now on, it is automatically banned."
   "Show current track title and artist in echo area."
   (interactive)
   (if (memq shellfm-status '(radio paused))
-      (message (format "Currently playing %s — %s"
-                       (propertize shellfm-current-artist 'face 'bold)
-                       (propertize shellfm-current-title 'face 'bold)))
+      (message (format "Currently playing %s by %s"
+                       (propertize shellfm-current-title 'face 'bold)
+                       (propertize shellfm-current-artist 'face 'bold)))
     (message "Not available.")))
 
 (defmacro define-shellfm-tag-command (command-name tagging-type &optional doc)
@@ -428,7 +428,7 @@ another function depending on his choice. CHOICE-MAP is an alist
 where key is a character provided by user and value is a function
 to call in that case.
 
-Example for CHOICE-MAP: 
+Example for CHOICE-MAP:
 
     '((?p . play) (?x . exit))
 
@@ -522,6 +522,10 @@ DOC is an optional documentation string."
       ("Global tag" . shellfm-station-tag)
       ("Recommended tracks" . shellfm-station-recommended)))
   
+  (define-shellfm-menu-keys shellfm-menu-map
+    '(("Launch/kill Shell.FM" . shellfm)
+      ("--double-line" . sep)))
+
   (define-key-after shellfm-menu-map [shellfm-station]
     `("Station" . ,shellfm-station-menu-map))
 
@@ -533,17 +537,20 @@ DOC is an optional documentation string."
   
   ;; General
   (define-shellfm-menu-keys shellfm-menu-map
-    '(("Love track" . shellfm-love-track)
+    '(("--" . sep1)
+      ("Love track" . shellfm-love-track)
       ("Unlove track" . shellfm-unlove-track)
       ("Add to playlist" . shellfm-add-to-playlist)
+      ("--" . sep2)
       ("Skip track" . shellfm-skip-track)
       ("Ban track" . shellfm-ban-track)
       ("Ban artist" . shellfm-ban-artist)
+      ("--" . sep3)
       ("Stop" . shellfm-stop)
       ("Pause/Play" . shellfm-pause)
+      ("--" . sep4)
       ("Show Shell.FM status" . shellfm-show-status)
-      ("Show track info" . shellfm-track-info)
-      ("Launch/kill Shell.FM" . shellfm)))
+      ("Show track info" . shellfm-track-info)))
 
   (define-key-after global-map [menu-bar shellfm] (cons "Shell.FM" shellfm-menu-map)))
 
@@ -566,7 +573,7 @@ DOC is an optional documentation string."
 When prefix ARG is -1, force shell-fm killing."
   (interactive "p")
   (if (and (not (= arg -1)) (not (shellfm-running-p)))
-      (progn 
+      (progn
         (let ((sp
                (start-process "shell-fm" nil shellfm-program
                               (concat "-b" shellfm-args) lastfm-default-url)))
