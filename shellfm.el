@@ -43,6 +43,10 @@
   :type 'string
   :tag "Shell-fm program path")
 
+(defcustom shellfm-confirm-skip t
+  "Ask for confirmation when skipping tracks."
+  :type 'boolean)
+
 (defcustom shellfm-args ""
   "Addition command line options to be passed to shell-fm."
   :group 'shellfm
@@ -303,17 +307,23 @@ This function always returns nil."
 
 ;;;; Current track commands
 
-(defmacro define-shellfm-simple-command (command-name string &optional doc prompt)
+(defmacro define-shellfm-simple-command (command-name string &optional doc prompt prompt-option)
   "Define a new command COMMAND-NAME activated by STRING sent to Shell.fm.
 
 DOC is an optional documentation string.
 
-If PROMPT provided, command is sent only if user gives a positive
-answer to yes-or-no query with PROMPT."
-  (let ((confirm-command
-         (if prompt
-             `(if (not (y-or-n-p ,prompt)) (error "Command aborted"))
-           (progn))))
+If PROMPT is provided, when PROMPT-OPTION is given, command sent
+only in case value PROMPT-OPTION is nil or if user gives a
+positive answer to y-or-n query with PROMPT. If PROMPT-OPTION is
+omitted, user is inconditionally asked for confirmation with
+PROMPT."
+  (let* ((query `(if (not (y-or-n-p ,prompt)) (error "Command aborted")))
+         (confirm-command
+          (if prompt
+              (if prompt-option
+                  `(when ,prompt-option ,query)
+                query)
+            (progn))))
     `(defun ,command-name ()
        ,doc
        (interactive)
@@ -327,7 +337,7 @@ answer to yes-or-no query with PROMPT."
   "Switch to station of current artist's fans.")
 
 (define-shellfm-simple-command shellfm-skip-track "n"
-  "Skip current track." "Really skip?")
+  "Skip current track." "Really skip? " shellfm-confirm-skip)
 
 (define-shellfm-simple-command shellfm-love-track "l"
   "Mark current track as loved.")
@@ -336,7 +346,7 @@ answer to yes-or-no query with PROMPT."
   "Ban current track." "Do you really want to ban current track? ")
 
 (define-shellfm-simple-command shellfm-ban-artist "A"
-   "Whenever a track  of current artist is played
+   "Whenever a track by current artist is played
 from now on, it is automatically banned."
    "Do you really want to ban current artist?")
 
