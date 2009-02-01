@@ -86,6 +86,12 @@
    `shell-fm -b ""` — yields «Bad lastfm:// URL» error. Fix: always
    pass some `lastfm://` URL to `shell-fm` process. 
 
+* BUGS
+** Unable to get station info
+   As of February 1, 2009, console `shell-fm(1)` program is unable to
+   properly show station name, displaying broken `Receiving .` message
+   instead. Emacs interface therefore can't switch to «playing» mode,
+   making it impossible to get station name and current track info.
 * Manual
 ** Prerequisites
    Make sure you've got fresh Shell-fm *working* installation (checked
