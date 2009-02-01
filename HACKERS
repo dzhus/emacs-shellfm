@@ -9,35 +9,13 @@
 *** DONE [#A] Parsing shell-fm output
     CLOSED: [2008-01-05 Сбт 23:20]
     Filter function should inform user about shell-fm status
-** [100%] «Robustness» :-)
-   - [1/1] Handle unexpected shell-fm output
-     - [X] Unset login/password
-   - [X] Unset Last.fm username
-         Emacs-shellfm extracts account name from `shell-fm.rc` which
-         is guaranteed to be correct as `shell-fm(1)` uses this data
-         to connect to the Last.fm servers
-** TODO Keybindings
-** [1/2] «Nifties»
-   - [ ] modeline lighter
-   - [X] rich format status messages
-** DONE Shell.FM global menu
-** TODO [#D] Minor mode
-   Probably emacs-shellfm should act like a minor mode.
-   [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
-** TODO Nondefault `np-file-format` value handling
-   Currently emacs-shellfm is unaware of `np-file-format` changes in
-   `shell-fm.rc`.
-
-   Probably the package should somehow get all available track
-   information, mapping `shell-fm(1)` output into elisp variables for
-   further processing and using (i. e. in `shellfm-track-info`
-   function). Ways to achieve this are:
-
-   1. Use network interface `info` command. Cons: second interaction
-      level in addition to subprocess textual exchange.
-   2. Override `np-file-format` option when launching `shell-fm(1)` to
-      "%a;%t;%l%d;%s;%R".
-   3. Allow customization of the `shellfm-nowplaying-regexp` variable.
+*** [100%] «Robustness» :-)
+    - [1/1] Handle unexpected shell-fm output
+      - [X] Unset login/password
+    - [X] Unset Last.fm username
+          Emacs-shellfm extracts account name from `shell-fm.rc` which
+          is guaranteed to be correct as `shell-fm(1)` uses this data
+          to connect to the Last.fm servers
 ** Package functions
 *** IN PROGRESS [13/15] General
     - [X] shellfm
@@ -83,6 +61,29 @@
      - [X] shellfm-track-hook
      - [X] shellfm-status-hook
      - [ ] shellfm-global-menu
+** Plans
+*** DONE Shell.FM global menu
+*** TODO Nondefault `np-file-format` value handling
+    Currently emacs-shellfm is unaware of `np-file-format` changes in
+    `shell-fm.rc`.
+
+    Probably the package should somehow get all available track
+    information, mapping `shell-fm(1)` output into elisp variables for
+    further processing and using (i. e. in `shellfm-track-info`
+    function). Ways to achieve this are:
+
+    1. Use network interface `info` command. Cons: second interaction
+       level in addition to subprocess textual exchange.
+    2. Override `np-file-format` option when launching `shell-fm(1)` to
+       "%a;%t;%l%d;%s;%R".
+    3. Allow customization of the `shellfm-nowplaying-regexp` variable.
+*** [1/2] «Nifties»
+    - [ ] modeline lighter
+    - [X] rich format status messages
+*** TODO Keybindings
+*** TODO [#D] Minor mode
+    Probably emacs-shellfm should act like a minor mode.
+    [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
 ** Issues
 *** DONE getopt+shell-fm is nasty with command line options:
     CLOSED: [2008-01-04 Птн 19:29]
