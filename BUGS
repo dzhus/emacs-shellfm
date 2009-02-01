@@ -1,6 +1,6 @@
 -*- org -*-
 
-* Unable to get station info
+* TODO Unable to get station info
   As of February 1, 2009, console `shell-fm(1)` program is unable to
   properly show station name, displaying broken `Receiving .` message
   instead. Emacs interface therefore can't switch to «playing» mode,
