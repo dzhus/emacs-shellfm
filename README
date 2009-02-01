@@ -1,9 +1,7 @@
 -*- org -*-
 
 * Prerequisites
-  Make sure you've got fresh Shell-fm *working* installation (checked
-  with git version 24-06-2008). This package will fail to work
-  otherwise, because it relies on `-b` option added to Shell-FM.
+  Shell-FM v0.5 is required for this package to work.
 * Installation
   Unpack emacs-shellfm tarball.
 
@@ -28,18 +26,29 @@
    Kill Shell-FM using `shellfm-kill` function.
    
 ** Tips
-   In case you have keyboard with additional multimedia keys, it may
-   be cool to bind them all to `shellfm-` functions.
+*** Keybindings
+    In case you have keyboard with additional multimedia keys, it may
+    be cool to bind them all to `shellfm-` functions.
 
-   Here's a binding I use (launch Shell-FM unless it's not yet running
-   or skip current track otherwise):
+    Here's a binding I use (launch Shell-FM unless it's not yet running
+    or skip current track otherwise):
 
-       (global-set-key (kbd "<XF86AudioPlay>")
-                    (lambda () (interactive)
-                      (if (shellfm-running-p)
-                          (shellfm-skip-track)
-                        (shellfm 1))))
+        (global-set-key (kbd "<XF86AudioPlay>")
+                     (lambda () (interactive)
+                       (if (shellfm-running-p)
+                           (shellfm-skip-track)
+                           (shellfm 1))))
+
+*** Accessing current track data
+    This package maintains several variables which may be utilised by
+    your code:
+    
+    - `shellfm-current-title`
+    - `shellfm-current-artist`
+    - `shellfm-current-station`
+    
 * Known issues
+  All *bugs* are listed in [[file:BUGS][BUGS]].
 ** Login data
    Emacs-shellfm won't work correctly unless you set up your Last.fm
    login and password in `~/.shell-fm/shell-fm.rc`.
@@ -54,5 +63,9 @@
   You may read an original emacs-shellfm announcement at
   http://sphinx.net.ru/blog/entry/emacs-shellfm/ (in Russian).
 
+  Emacswiki has a page dedicated to emacs-shellfm:
+  http://www.emacswiki.org/emacs/emacs-shellfm
+
+* Your contributions
   Please report any bugs and issues related to emacs-shellfm to me
   via dima@sphinx.net.ru.
