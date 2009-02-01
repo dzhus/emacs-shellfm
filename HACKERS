@@ -1,0 +1,90 @@
+-*-org-*-
+
+* Dev notes
+** Package structure
+   A package provides Emacs Lisp interface to control shell-fm (console
+   Last.fm player) subprocess
+*** User functions
+    Sending commands to shell-fm subprocess.
+*** DONE [#A] Parsing shell-fm output
+    CLOSED: [2008-01-05 Сбт 23:20]
+    Filter function should inform user about shell-fm status
+** [100%] «Robustness» :-)
+   - [1/1] Handle unexpected shell-fm output
+     - [X] Unset login/password
+   - [X] Unset Last.fm username
+         Emacs-shellfm extracts account name from `shell-fm.rc` which
+         is guaranteed to be correct as `shell-fm(1)` uses this data
+         to connect to the Last.fm servers
+** TODO Keybindings
+** [1/2] «Nifties»
+   - [ ] modeline lighter
+   - [X] rich format status messages
+** DONE Shell.FM global menu
+** TODO [#D] Minor mode
+   Probably emacs-shellfm should act like a minor mode.
+   [[info:elisp:Minor%20Mode%20Conventions][elisp:Minor Mode Conventions]]
+** TODO Nondefault `np-file-format` value handling
+   Currently emacs-shellfm is unaware of `np-file-format` changes in
+   `shell-fm.rc`.
+
+   Probably the package should somehow get all available track
+   information, mapping `shell-fm(1)` output into elisp variables for
+   further processing and using (i. e. in `shellfm-track-info`
+   function). Ways to achieve this are:
+
+   1. Use network interface `info` command. Cons: second interaction
+      level in addition to subprocess textual exchange.
+   2. Override `np-file-format` option when launching `shell-fm(1)` to
+      "%a;%t;%l%d;%s;%R".
+   3. Allow customization of the `shellfm-nowplaying-regexp` variable.
+** Package functions
+*** IN PROGRESS [13/15] General
+    - [X] shellfm
+    - [X] shellfm-url
+    - [X] shellfm-station-tag
+    - [X] Autocomplete global tags
+    - [X] shellfm-station-artist
+    - [X] Autocomplete favorite artists
+    - [X] shellfm-station-recommended
+    - [X] shellfm-station-group
+    - [X] shellfm-station-fans
+    - [X] shellfm-station-similar-artists
+    - [X] shellfm-station-playlist
+    - [X] shellfm-kill
+    - [X] shellfm-status
+    - [ ] shellfm-upcoming-tracks
+*** IN PROGRESS [72%] Current track operation
+    - [X] shellfm-track-info
+    - [ ] Album data in track info
+    - [X] shellfm-skip-track
+    - [X] shellfm-love-track
+    - [X] shellfm-ban-track
+    - [5/5] Tagging
+      - [X] shellfm-tag
+      - [X] shellfm-tag-track
+      - [X] shellfm-tag-artist
+      - [X] shellfm-tag-album
+      - [X] autocomplete tags while tagging
+    - [4/4] Recommending
+      - [X] shellfm-recommend
+      - [X] shellfm-recommend-track
+      - [X] shellfm-recommend-artist
+      - [X] shellfm-recommend-album
+    - [X] shellfm-similar-artists
+    - [X] shellfm-pause
+    - [X] shellfm-stop
+    - [X] shellfm-add-to-playlist
+    - [ ] shellfm-insert-track-info
+*** Customizable options
+**** IN PROGRESS [4/5] General
+     - [X] shellfm-executable
+     - [X] shellfm-args
+     - [X] shellfm-track-hook
+     - [X] shellfm-status-hook
+     - [ ] shellfm-global-menu
+** Issues
+*** DONE getopt+shell-fm is nasty with command line options:
+    CLOSED: [2008-01-04 Птн 19:29]
+    `shell-fm -b ""` — yields «Bad lastfm:// URL» error. Fix: always
+    pass some `lastfm://` URL to `shell-fm` process. 

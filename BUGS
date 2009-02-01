@@ -1,0 +1,12 @@
+-*- org -*-
+
+* Unable to get station info
+  As of February 1, 2009, console `shell-fm(1)` program is unable to
+  properly show station name, displaying broken `Receiving .` message
+  instead. Emacs interface therefore can't switch to «playing» mode,
+  making it impossible to get station name and current track info,
+  showing only «Not available».
+  
+  It happens because XSPF provided by Last.fm for radio stations lacks
+  proper `<title></title>` contents. So this is not a bug in
+  emacs-shellfm or `shell-fm(1)`, but a Last.fm issue.
