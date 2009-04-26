@@ -1,11 +1,13 @@
 ;;; shellfm.el --- Emacs Shell.FM interface
 
-;; Copyright (C) 2008 Dmitry Dzhus
+;; Copyright (C) 2008, 2009 Dmitry Dzhus
 
-;; Author: Dmitry Dzhus <mail@sphinx.net.ru>
-;; Keywords: scrobbling audio music last.fm
+;; Author: Dmitry Dzhus <dima@sphinx.net.ru>
+;; Keywords: scrobbling, audio, music, last.fm, radio
+;; Homepage: http://www.emacswiki.org/emacs/emacs-shellfm
+;; Version: 0.1
 
-;; This file is a part of emacs-shellfm.
+;; This file is not (yet) part of GNU Emacs.
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,6 +27,14 @@
 
 ;; Emacs-shellfm is the Emacs interface for Shell.fm console client
 ;; for Last.fm.
+
+;; Shell.fm v0.5 or higher is required for this package to work. Make
+;; sure you customize `shellfm` options group before first use.
+
+;; `shellfm' function launches Shell-FM subprocess and tunet to
+;; default Last.fm radio provided you've specified one in
+;; `lastfm-default-url' customization variable. Type `C-h a shellfm'
+;; in order to see all package functions.
 
 ;;; Code:
 
@@ -577,6 +587,7 @@ DOC is an optional documentation string."
         t)
     nil))
 
+;;;###autoload
 (defun shellfm (&optional arg)
   "Start or stop shell-fm subprocess.
 
