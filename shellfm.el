@@ -300,14 +300,17 @@ This function always returns nil."
 (defun shellfm-station-recommended ()
   "Switch to recommended tracks station."
   (interactive)
-  ;; 100 is unknown magic constant. I'm uncertain if this is really an
-  ;; obscurity level.
-  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/recommended/100/")))
+  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/recommended")))
 
-(defun shellfm-station-playlist ()
-  "Switch to personal playlist station."
+(defun shellfm-station-library ()
+  "Switch to personal library station."
   (interactive)
-  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/playlist")))
+  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/library")))
+
+(defun shellfm-station-mix ()
+  "Switch to mix radio."
+  (interactive)
+  (shellfm-radio-command "user" (concat (shellfm-get-lastfm-user) "/mix")))
 
 (defun shellfm-station-group (group)
   "Switch to GROUP station."
@@ -534,13 +537,17 @@ DOC is an optional documentation string."
 
   ;; Station
   (define-shellfm-menu-keys shellfm-station-menu-map
-    '(("Group radio" . shellfm-station-group)
-      ("Similar to artist" . shellfm-station-artist)
-      ("Fans" . shellfm-station-fans)
-      ("Personal playlist" . shellfm-station-playlist)
-      ("URL" . shellfm-url)
+    '(("Similar to artist" . shellfm-station-artist)
       ("Global tag" . shellfm-station-tag)
-      ("Recommended tracks" . shellfm-station-recommended)))
+      ("--" . sep1)
+      ("Recommended tracks" . shellfm-station-recommended)      
+      ("Personal library" . shellfm-station-library)
+      ("Mix radio" . shellfm-station-mix)
+      ("--" . sep2)
+      ("Group radio" . shellfm-station-group)
+      ("Fans" . shellfm-station-fans)
+      ("--" . sep3)
+      ("URL" . shellfm-url)))
   
   (define-shellfm-menu-keys shellfm-menu-map
     '(("Launch/kill Shell.FM" . shellfm)

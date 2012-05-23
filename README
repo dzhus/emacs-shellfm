@@ -1,7 +1,7 @@
 -*- org -*-
 
 * Prerequisites
-  Shell-FM v0.5 is required for this package to work.
+  Shell-FM v0.7 is required for this package to work.
 * Installation
   Unpack emacs-shellfm tarball.
 
@@ -61,11 +61,11 @@
 
 * Further information
   You may read an original emacs-shellfm announcement at
-  http://sphinx.net.ru/blog/entry/emacs-shellfm/ (in Russian).
+  http://dzhus.org/blog/entry/emacs-shellfm/ (in Russian).
 
   Emacswiki has a page dedicated to emacs-shellfm:
   http://www.emacswiki.org/emacs/emacs-shellfm
 
 * Your contributions
   Please report any bugs and issues related to emacs-shellfm to me
-  via dima@sphinx.net.ru.
+  via dima@dzhus.org
