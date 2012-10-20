@@ -1,6 +1,6 @@
 ;;; shellfm.el --- Emacs Shell.FM interface
 
-;; Copyright (C) 2008, 2009 Dmitry Dzhus
+;; Copyright (C) 2008, 2009, 2012 Dmitry Dzhus
 
 ;; Author: Dmitry Dzhus <dima@sphinx.net.ru>
 ;; Keywords: scrobbling, audio, music, last.fm, radio
